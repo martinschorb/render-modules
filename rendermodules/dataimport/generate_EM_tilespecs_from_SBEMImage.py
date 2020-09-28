@@ -222,6 +222,8 @@ class GenerateSBEMImageTileSpecs(StackOutputModule):
 
         imgdir = self.args.get('image_directory')
 
+        print(imgdir)
+
         tspecs = self.ts_from_sbemimage(imgdir)
                     # imgdir,
                     # img_coords[img['img_path']][0] - minX,
