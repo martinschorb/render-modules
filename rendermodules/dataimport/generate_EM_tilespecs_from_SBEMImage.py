@@ -10,7 +10,7 @@ import renderapi
 from rendermodules.module.render_module import (
     StackOutputModule, RenderModuleException)
 from rendermodules.dataimport.schemas import (GenerateEMTileSpecsOutput,
-                                              GenerateEMTileSpecsParameters)
+                                              GenerateSBEMTileSpecsParameters)
 
 from rendermodules.utilities.EMBL_file_utils import groupsharepath
 
