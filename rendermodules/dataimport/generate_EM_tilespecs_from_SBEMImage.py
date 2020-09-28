@@ -249,5 +249,7 @@ class GenerateSBEMImageTileSpecs(StackOutputModule):
 
 
 if __name__ == "__main__":
-    mod = GenerateSBEMImageTileSpecs({'image_directory':example_input['image_directory']})#input_data=example_input)
+    print(example_input['image_directory'])
+    
+    mod = GenerateSBEMImageTileSpecs(input_data=example_input)
     mod.run()
