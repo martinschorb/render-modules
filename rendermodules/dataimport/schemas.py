@@ -159,7 +159,7 @@ class GenerateEMTileSpecsParameters(OutputStackParameters):
         rendermodules.utilities.schema_utils.posix_to_uri(
             data, "image_directory", "image_prefix")
 
-class GenerateEMTileSpecsParameters(OutputStackParameters):
+class GenerateSBEMTileSpecsParameters(OutputStackParameters):
     # metafile = InputFile(
     #     required=False,
     #     description="metadata file containing TEMCA acquisition data")

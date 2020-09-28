@@ -41,7 +41,7 @@ example_input = {
 
 
 class GenerateSBEMImageTileSpecs(StackOutputModule):
-    default_schema = GenerateEMTileSpecsParameters
+    default_schema = GenerateSBEMTileSpecsParameters
     default_output_schema = GenerateEMTileSpecsOutput
 
     def ts_from_imgdata(self, imgdata, imgprefix, x, y,
