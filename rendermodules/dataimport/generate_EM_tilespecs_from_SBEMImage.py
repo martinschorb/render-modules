@@ -156,7 +156,9 @@ class GenerateSBEMImageTileSpecs(StackOutputModule):
         return f1,downdir,tilespeclist
 
 
-    def ts_from_sbemimage (self,rootdir,outputProject,outputOwner,outputStack,minval=0,maxval=255):
+    def ts_from_sbemimage (self,imgdir):
+
+        os.chdir(imgdir)
 
         mipmap_args = []
         tilespecpaths = []
@@ -218,11 +220,9 @@ class GenerateSBEMImageTileSpecs(StackOutputModule):
         # with open(self.args['metafile'], 'r') as f:
         #     meta = json.load(f)
 
-        imgdir = self.args.get(
-            'image_prefix',
-            uri_utils.uri_prefix(self.args['metafile_uri']))
+        imgdir = self.args.get('image_directory')
 
-        tspecs = self.ts_from_sbemimage()
+        tspecs = self.ts_from_sbemimage(imgdir)
                     # imgdir,
                     # img_coords[img['img_path']][0] - minX,
                     # img_coords[img['img_path']][1] - minY,
