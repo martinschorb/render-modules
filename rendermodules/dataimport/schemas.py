@@ -159,6 +159,52 @@ class GenerateEMTileSpecsParameters(OutputStackParameters):
         rendermodules.utilities.schema_utils.posix_to_uri(
             data, "image_directory", "image_prefix")
 
+class GenerateEMTileSpecsParameters(OutputStackParameters):
+    # metafile = InputFile(
+    #     required=False,
+    #     description="metadata file containing TEMCA acquisition data")
+    # metafile_uri = Str(
+    #     required=False, description=(
+    #         "uri of metadata containing TEMCA acquisition data"))
+    # # FIXME maskUrl and image_directory are not required -- posix_to_uri should support this
+    # maskUrl = InputFile(
+    #     required=False,
+    #     default=None,
+    #     missing=None,
+    #     description="absolute path to image mask to apply")
+    # maskUrl_uri = Str(
+    #     required=False,
+    #     default=None,
+    #     missing=None,
+    #     description=("uri of image mask to apply"))
+    image_directory = InputDir(
+        required=True,
+        description=("directory used in determining absolute paths to images. "
+                     "Defaults to parent directory containing metafile "
+                     "if omitted."))
+    image_prefix = Str(
+        required=False, description=(
+            "prefix used in determining full uris of images in metadata. "
+            "Defaults to using the / delimited prefix to "
+            "the metadata_uri if omitted"))
+    maximum_intensity = Int(
+        required=False, default=255,
+        description=("intensity value to interpret as white"))
+    minimum_intensity = Int(
+        required=False, default=0,
+        description=("intensity value to interpret as black"))
+    sectionId = Str(
+        required=False,
+        description=("sectionId to apply to tiles during ingest.  "
+                     "If unspecified will default to a string "
+                     "representation of the float value of z_index."))
+
+    @pre_load
+    def image_directory_to_prefix(self, data):
+        rendermodules.utilities.schema_utils.posix_to_uri(
+            data, "image_directory", "image_prefix")
+
+
 
 class GenerateEMTileSpecsOutput(DefaultSchema):
     stack = Str(required=True,
