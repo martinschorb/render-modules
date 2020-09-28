@@ -223,18 +223,18 @@ class GenerateSBEMImageTileSpecs(StackOutputModule):
             uri_utils.uri_prefix(self.args['metafile_uri']))
 
         tspecs = self.ts_from_sbemimage()
-                    imgdir,
-                    img_coords[img['img_path']][0] - minX,
-                    img_coords[img['img_path']][1] - minY,
-                    minint=self.args['minimum_intensity'],
-                    maxint=self.args['maximum_intensity'],
-                    width=roidata['camera_info']['width'],
-                    height=roidata['camera_info']['height'],
-                    z=self.zValues[0], sectionId=self.args.get('sectionId'),
-                    scopeId=roidata['temca_id'],
-                    cameraId=roidata['camera_info']['camera_id'],
-                    pixelsize=pixelsize,
-                    maskUrl=self.args['maskUrl_uri']) for img in imgdata]
+                    # imgdir,
+                    # img_coords[img['img_path']][0] - minX,
+                    # img_coords[img['img_path']][1] - minY,
+                    # minint=self.args['minimum_intensity'],
+                    # maxint=self.args['maximum_intensity'],
+                    # width=roidata['camera_info']['width'],
+                    # height=roidata['camera_info']['height'],
+                    # z=self.zValues[0], sectionId=self.args.get('sectionId'),
+                    # scopeId=roidata['temca_id'],
+                    # cameraId=roidata['camera_info']['camera_id'],
+                    # pixelsize=pixelsize,
+                    # maskUrl=self.args['maskUrl_uri']) for img in imgdata]
 
         self.output_tilespecs_to_stack(tspecs)
 
