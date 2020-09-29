@@ -10,7 +10,8 @@ example_json = {
         "project": "H1706003_z150",
         "client_scripts": "/pipeline/render/render-ws-java-client/src/main/scripts"
     },
-    "example": "my example parameters"
+    "example": "my example parameters",
+    "output_json":"/Users/schorb/lmaa" 
 }
 
 

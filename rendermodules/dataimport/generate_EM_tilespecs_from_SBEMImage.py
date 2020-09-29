@@ -27,7 +27,7 @@ example_input = {
         "host": "pc-emcf-16.embl.de",
         "port": 8080,
         "owner": "test",
-        "project": "RENDERAPI_TEST",
+        "project": "RENDER-module_TEST",
         "client_scripts": (
             "/home/schorb/render/render-ws-java-client/"
             "src/main/scripts")},
@@ -77,7 +77,7 @@ class GenerateSBEMImageTileSpecs(StackOutputModule):
             stageY=imgdata['img_meta']['stage_pos'][1],
             rotation=imgdata['img_meta']['angle'], pixelsize=pixelsize)
 
-    def ts_from_SBEMtile(line):
+    def ts_from_SBEMtile(self,line,pxs):
         tile = bdv.str2dict(line[line.find('{'):])
 
    # 2) The translation matrix to position the object in space (lower left corner)
@@ -108,60 +108,69 @@ class GenerateSBEMImageTileSpecs(StackOutputModule):
         #construct command for creating mipmaps for this tilespec
         #downcmd = ['python','create_mipmaps.py','--inputImage',filepath,'--outputDirectory',downdir,'--mipmaplevels','1','2','3']
         #cmds.append(downcmd)
+        
+        ip = renderapi.image_pyramid.ImagePyramid()
+        ip[0] = renderapi.image_pyramid.MipMap(imageUrl='file://' + filepath)
 
-        layout = Layout(sectionId=tile['slice_counter'],
-                                        scopeId='3View',
-                                        cameraId='3View',
-                                        imageRow=0,
-                                        imageCol=0,
-                                        stageX = tile['glob_x']/10,
-                                        stageY = tile['glob_y']/10,
-                                        rotation = 0.0,
-                                        pixelsize = pxs)
+        # mipmap0 = MipMapLevel(level=0,imageUrl='file://' + filepath)
+        # mipmaplevels=[mipmap0]
+        # filename = tile['tileid']
 
-        mipmap0 = MipMapLevel(level=0,imageUrl='file://' + filepath)
-        mipmaplevels=[mipmap0]
-        filename = tile['tileid']
+        # for i in range(1,4):
+        #     scUrl = 'file://' + os.path.join(downdir1,fbase) + '_mip0%d.jpg'%i
+        #     mml = MipMapLevel(level=i,imageUrl=scUrl)
+        #     mipmaplevels.append(mml)
 
-        for i in range(1,4):
-            scUrl = 'file://' + os.path.join(downdir1,fbase) + '_mip0%d.jpg'%i
-            mml = MipMapLevel(level=i,imageUrl=scUrl)
-            mipmaplevels.append(mml)
-
-        tform = AffineModel(M00=1,
+        tform = renderapi.transform.AffineModel(M00=1,
                                  M01=0,
                                  M10=0,
                                  M11=1,
                                  B0=tile['glob_x']/10,
                                  B1=tile['glob_y']/10)
 
-        tilespeclist.append(TileSpec(tileId=tile['tileid'],
-                             frameId = tile['tileid'][:tile['tileid'].find('.')],
-                             z=tile['glob_z'],
-                             width=tile['tile_width'],
-                             height=tile['tile_height'],
-                             mipMapLevels=mipmaplevels,
-                             tforms=[tform],
-                             minint=minval,
-                             maxint=maxval,
-                             layout= layout))
-        z = tile['glob_z']
-
+        # tilespeclist.append(TileSpec(tileId=tile['tileid'],
+        #                      frameId = tile['tileid'][:tile['tileid'].find('.')],
+        #                      z=tile['glob_z'],
+        #                      width=tile['tile_width'],
+        #                      height=tile['tile_height'],
+        #                      mipMapLevels=mipmaplevels,
+        #                      tforms=[tform],
+        #                      minint=minval,
+        #                      maxint=maxval,
+        #                      layout= layout))
+        ts = renderapi.tilespec.TileSpec(
+            tileId=tile['tileid'],
+            imagePyramid=ip,
+            z=tile['glob_z'],
+            width=tile['tile_width'],
+            height=tile['tile_height'],
+            minint=0, maxint=255,
+            tforms=[tform],
+            # imagePyramid=ip,
+            sectionId=tile['slice_counter'],
+            scopeId='3View',
+            cameraId='3View',
+            # imageCol=imgdata['img_meta']['raster_pos'][0],
+            # imageRow=imgdata['img_meta']['raster_pos'][1],
+            stageX = tile['glob_x']/10,
+            stageY = tile['glob_y']/10,
+            rotation = 0.0,
+            pixelsize = pxs)
 
         # json_file = os.path.realpath(os.path.join(tilespecdir,outputProject+'_'+outputOwner+'_'+outputStack+'_%04d.json'%z))
         # fd=open(json_file, "w")
         # renderapi.utils.renderdump(tilespeclist,fd,sort_keys=True, indent=4, separators=(',', ': '))
         # fd.close()
 
-        return f1,downdir,tilespeclist
+        return f1,downdir,ts
 
 
     def ts_from_sbemimage (self,imgdir):
 
         os.chdir(imgdir)
 
-        mipmap_args = []
-        tilespecpaths = []
+        # mipmap_args = []
+        # tilespecpaths = []
 
 
         if not os.path.exists('meta'): print('Change to proper directory!');exit()
@@ -178,7 +187,7 @@ class GenerateSBEMImageTileSpecs(StackOutputModule):
 
         for mfile in mfiles:
 
-            with open(mfile) as mf: ml = mf.read().splitlines()
+            # with open(mfile) as mf: ml = mf.read().splitlines()
 
             mdfile = os.path.join('meta','logs','metadata'+mfile[mfile.rfind('_'):])
 
@@ -202,18 +211,18 @@ class GenerateSBEMImageTileSpecs(StackOutputModule):
             mat_s = np.concatenate((mat,[[0],[0],[0]]),axis=1)
             mat_s = np.concatenate((mat_s,[[0,0,0,1]]))
 
-            tilespeclist=[]
-            z=0
+            tspecs=[]
+            # z=0
 
             for line in mdl:
                 if line.startswith('TILE: '):
 
-                    f1,downdir,tilespeclist = ts_from_SBEMtile(line,pxs)
+                    f1,downdir,tilespeclist = self.ts_from_SBEMtile(line,pxs)
 
-                    mipmap_args.append((f1,os.path.realpath(downdir)))
+                    # mipmap_args.append((f1,os.path.realpath(downdir)))
                     tspecs.append(tilespeclist)
 
-        return tilespecs #,mipmap_args
+        return tspecs #,mipmap_args
 
 
     def run(self):
@@ -248,8 +257,6 @@ class GenerateSBEMImageTileSpecs(StackOutputModule):
 
 
 
-if __name__ == "__main__":
-    print(example_input['image_directory'])
-    
+if __name__ == "__main__":  
     mod = GenerateSBEMImageTileSpecs(input_data=example_input)
     mod.run()
