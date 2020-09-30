@@ -3,12 +3,11 @@
 create tilespecs from SBEMImage dataset
 """
 
-import json
 import os
 import numpy
 import renderapi
-from rendermodules.module.render_module import (
-    StackOutputModule, RenderModuleException)
+from rendermodules.module.render_module import StackOutputModule
+
 from rendermodules.dataimport.schemas import (GenerateEMTileSpecsOutput,
                                               GenerateSBEMTileSpecsParameters)
 
@@ -103,11 +102,7 @@ class GenerateSBEMImageTileSpecs(StackOutputModule):
         if not os.path.exists(downdir):
             os.makedirs(downdir)
 
-        downdir1 = groupsharepath(os.path.realpath(downdir))
-
-        #construct command for creating mipmaps for this tilespec
-        #downcmd = ['python','create_mipmaps.py','--inputImage',filepath,'--outputDirectory',downdir,'--mipmaplevels','1','2','3']
-        #cmds.append(downcmd)
+        
 
         ip = renderapi.image_pyramid.ImagePyramid()
         ip[0] = renderapi.image_pyramid.MipMap(imageUrl='file://' + filepath)
@@ -180,10 +175,6 @@ class GenerateSBEMImageTileSpecs(StackOutputModule):
 
         mfiles = glob.glob(mfile0+'*')
 
-        tiles = list()
-        views = list()
-
-        idx = 0
 
         for mfile in mfiles:
 
