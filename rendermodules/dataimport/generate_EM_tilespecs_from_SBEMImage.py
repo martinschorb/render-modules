@@ -29,10 +29,10 @@ example_input = {
         "owner": "test",
         "project": "RENDERmodule_TEST",
         "client_scripts": (
-            "/home/schorb/render/render-ws-java-client/"
+            "/g/emcf/software/render/render-ws-java-client/"
             "src/main/scripts")},
     "image_directory": "/g/emcf/common/for_martin/SBEMdata/platy_20-05-27",
-    "stack": "TEST_IMPORT_FROM_SBEMIMAGE",
+    "stack": "groupshare_client_script_test",
     "overwrite_zlayer": True,
     "pool_size": 10,
     "close_stack": True,
@@ -108,7 +108,7 @@ class GenerateSBEMImageTileSpecs(StackOutputModule):
         #construct command for creating mipmaps for this tilespec
         #downcmd = ['python','create_mipmaps.py','--inputImage',filepath,'--outputDirectory',downdir,'--mipmaplevels','1','2','3']
         #cmds.append(downcmd)
-        
+
         ip = renderapi.image_pyramid.ImagePyramid()
         ip[0] = renderapi.image_pyramid.MipMap(imageUrl='file://' + filepath)
 
@@ -246,9 +246,9 @@ class GenerateSBEMImageTileSpecs(StackOutputModule):
                     # cameraId=roidata['camera_info']['camera_id'],
                     # pixelsize=pixelsize,
                     # maskUrl=self.args['maskUrl_uri']) for img in imgdata]
-        
-        
-        
+
+
+
         self.output_tilespecs_to_stack(tspecs)
 
 
@@ -261,6 +261,6 @@ class GenerateSBEMImageTileSpecs(StackOutputModule):
 
 
 
-if __name__ == "__main__":  
+if __name__ == "__main__":
     mod = GenerateSBEMImageTileSpecs(input_data=example_input)
     mod.run()
