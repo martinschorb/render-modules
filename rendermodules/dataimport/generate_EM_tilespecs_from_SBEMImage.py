@@ -27,7 +27,7 @@ example_input = {
         "host": "pc-emcf-16.embl.de",
         "port": 8080,
         "owner": "test",
-        "project": "RENDER-module_TEST",
+        "project": "RENDERmodule_TEST",
         "client_scripts": (
             "/home/schorb/render/render-ws-java-client/"
             "src/main/scripts")},
@@ -246,13 +246,17 @@ class GenerateSBEMImageTileSpecs(StackOutputModule):
                     # cameraId=roidata['camera_info']['camera_id'],
                     # pixelsize=pixelsize,
                     # maskUrl=self.args['maskUrl_uri']) for img in imgdata]
-
+        
+        
+        
         self.output_tilespecs_to_stack(tspecs)
 
-        try:
-            self.output({'stack': self.output_stack})
-        except AttributeError as e:
-            self.logger.error(e)
+
+# I don know what this does... so leave it out
+        # try:
+        #     self.output({'stack': self.output_stack})
+        # except AttributeError as e:
+        #     self.logger.error(e)
 
 
 
