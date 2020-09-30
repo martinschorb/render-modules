@@ -187,22 +187,22 @@ class GenerateSBEMTileSpecsParameters(OutputStackParameters):
             "prefix used in determining full uris of images in metadata. "
             "Defaults to using the / delimited prefix to "
             "the metadata_uri if omitted"))
-    maximum_intensity = Int(
-        required=False, default=255,
-        description=("intensity value to interpret as white"))
-    minimum_intensity = Int(
-        required=False, default=0,
-        description=("intensity value to interpret as black"))
-    sectionId = Str(
-        required=False,
-        description=("sectionId to apply to tiles during ingest.  "
-                     "If unspecified will default to a string "
-                     "representation of the float value of z_index."))
+    # maximum_intensity = Int(
+    #     required=False, default=255,
+    #     description=("intensity value to interpret as white"))
+    # minimum_intensity = Int(
+    #     required=False, default=0,
+    #     description=("intensity value to interpret as black"))
+    # sectionId = Str(
+    #     required=False,
+    #     description=("sectionId to apply to tiles during ingest.  "
+    #                  "If unspecified will default to a string "
+    #                  "representation of the float value of z_index."))
 
-    @pre_load
-    def image_directory_to_prefix(self, data):
-        rendermodules.utilities.schema_utils.posix_to_uri(
-            data, "image_directory", "image_prefix")
+    # @pre_load
+    # def image_directory_to_prefix(self, data):
+    #     rendermodules.utilities.schema_utils.posix_to_uri(
+    #         data, "image_directory", "image_prefix")
 
 
 
