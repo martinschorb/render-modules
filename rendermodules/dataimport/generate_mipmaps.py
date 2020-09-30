@@ -3,7 +3,7 @@ from six.moves import urllib
 from rendermodules.dataimport.create_mipmaps import (
     create_mipmaps, create_mipmaps_uri)
 from functools import partial
-from ..module.render_module import StackInputModule, RenderModuleException
+from rendermodules.module.render_module import StackInputModule, RenderModuleException
 from rendermodules.dataimport.schemas import (
     GenerateMipMapsParameters, GenerateMipMapsOutput)
 
@@ -12,14 +12,15 @@ if __name__ == "__main__" and __package__ is None:
 
 example = {
     "render": {
-        "host": "10.128.124.14",
-        "port": 8998,
-        "owner": "gayathri",
-        "project": "MM2",
-        "client_scripts": "/data/nc-em2/gayathrim/Janelia_Pipeline/render_20170613/render-ws-java-client/src/main/scripts"
-    },
+        "host": "pc-emcf-16.embl.de",
+        "port": 8080,
+        "owner": "test",
+        "project": "RENDERmodule_TEST",
+        "client_scripts": (
+            "/g/emcf/software/render/render-ws-java-client/"
+            "src/main/scripts")},
     "method": "PIL",
-    "input_stack": "mm2_acquire_8bit",
+    "input_stack": "TEST_IMPORT_FROM_SBEMIMAGE",
     "output_dir": "/net/aidc-isi1-prd/scratch/aibs/scratch",
     "convert_to_8bit": "False",
     "method": "PIL",

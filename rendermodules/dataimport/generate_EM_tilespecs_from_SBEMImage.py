@@ -33,7 +33,7 @@ example_input = {
     "image_directory": "/g/emcf/common/for_martin/SBEMdata/platy_20-05-27",
     "stack": "groupshare_client_script_test",
     "overwrite_zlayer": True,
-    "pool_size": 10,
+    "pool_size": 4,
     "close_stack": True,
     "z_index": 1
 }
