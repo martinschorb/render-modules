@@ -85,22 +85,22 @@ class GenerateSBEMImageTileSpecs(StackOutputModule):
 
         f1 = os.path.realpath(tile['filename'])
 
-        fbase = os.path.splitext(os.path.basename(f1))[0]
+        # fbase = os.path.splitext(os.path.basename(f1))[0]
 
-        tilespecdir = os.path.join('processed','tilespec')
+        # tilespecdir = os.path.join('processed','tilespec')
 
         filepath= groupsharepath(f1)
 
 
-        #print tilespecdir
-        if not os.path.isdir(tilespecdir):
-            os.makedirs(tilespecdir)
+        # #print tilespecdir
+        # if not os.path.isdir(tilespecdir):
+        #     os.makedirs(tilespecdir)
 
-        downdir = os.path.join("processed","downsamp_images")
-        #print "This is the Down Sampled Directory: %s"%downdir
+        # downdir = os.path.join("processed","downsamp_images")
+        # #print "This is the Down Sampled Directory: %s"%downdir
 
-        if not os.path.exists(downdir):
-            os.makedirs(downdir)
+        # if not os.path.exists(downdir):
+        #     os.makedirs(downdir)
 
         
 

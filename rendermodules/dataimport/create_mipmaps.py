@@ -153,14 +153,16 @@ def create_mipmaps_uri(inputImage, outputDirectory=None, method="block_reduce",
     inputImagepath = urllib.parse.urlparse(inputImage).path
     im = Image.open(io.BytesIO(uri_utils.uri_readbytes(inputImage)))
     # im = Image.open(inputImage)
+    
+    # TODO: proper type checks and then convert
     if convertTo8bit:
         table = [i//256 for i in range(65536)]
         im = im.convert('I')
-        im = im.point(table, 'L')
-
+        im = im.point(table, 'L')    
+    
     levels_uri_map = {int(level): uri_utils.uri_join(
         outputDirectory, str(level), '{basename}.{fmt}'.format(
-            basename=inputImagepath.lstrip("/"), fmt=outputformat))
+            basename=os.path.basename(inputImagepath), fmt=outputformat))
                        for level in mipmaplevels}
     # levels_file_map = {int(level): os.path.join(
     #     outputDirectory, str(level), '{basename}.{fmt}'.format(
@@ -173,7 +175,8 @@ def create_mipmaps_uri(inputImage, outputDirectory=None, method="block_reduce",
             im, levels_uri_map, force_redo=force_redo, **kwargs)
     except KeyError as e:
         raise CreateMipMapException("invalid method {}".format(e))
-
+        
+        
     return levels_uri_map
 
 
