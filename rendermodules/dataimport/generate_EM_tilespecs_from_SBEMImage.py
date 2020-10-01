@@ -31,7 +31,7 @@ example_input = {
             "/g/emcf/software/render/render-ws-java-client/"
             "src/main/scripts")},
     "image_directory": "/g/emcf/common/for_martin/SBEMdata/platy_20-05-27",
-    "stack": "groupshare_client_script_test",
+    "stack": "test1",
     "overwrite_zlayer": True,
     "pool_size": 4,
     "close_stack": True,
@@ -157,7 +157,7 @@ class GenerateSBEMImageTileSpecs(StackOutputModule):
         # renderapi.utils.renderdump(tilespeclist,fd,sort_keys=True, indent=4, separators=(',', ': '))
         # fd.close()
 
-        return f1,downdir,ts
+        return f1,ts
 
 
     def ts_from_sbemimage (self,imgdir):
@@ -208,7 +208,7 @@ class GenerateSBEMImageTileSpecs(StackOutputModule):
             for line in mdl:
                 if line.startswith('TILE: '):
 
-                    f1,downdir,tilespeclist = self.ts_from_SBEMtile(line,pxs)
+                    f1,tilespeclist = self.ts_from_SBEMtile(line,pxs)
 
                     # mipmap_args.append((f1,os.path.realpath(downdir)))
                     tspecs.append(tilespeclist)

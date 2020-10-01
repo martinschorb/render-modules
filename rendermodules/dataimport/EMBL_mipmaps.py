@@ -18,15 +18,16 @@ example = {
         "client_scripts": (
             "/g/emcf/software/render/render-ws-java-client/"
             "src/main/scripts")},
-    "input_stack": "TEST_IMPORT_FROM_SBEMIMAGE",
+    "input_stack": "test1",
     "method": "PIL",    
     "convert_to_8bit": "False", # IMPORTANT!!! True will create black images when original data is 8bit (SBEMImage)
-    "imgformat": "tif",
+    "imgformat": "png",
     "levels": 4,
     "force_redo": "True",
     "z":0,
     "pool_size":16,
     "output_prefix":"", # required field, will be unset and auto-generated in this script
+    "output_json":"/g/emcf/software/render/test1.json"
 }
 
 
