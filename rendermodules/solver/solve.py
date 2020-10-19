@@ -4,51 +4,55 @@ from bigfeta import bigfeta
 from rendermodules.solver.schemas import BigFetaSchema, BigFetaOutputSchema
 
 montage_example = {
-   "first_section": 1020,
-   "last_section": 1020,
-   "solve_type": "montage",
+   "first_section": 21900,
+   "last_section": 22300,
+   "solve_type": "3D",
    "close_stack": "True",
    "transformation": "affine",
    "start_from_file": "",
    "output_mode": "stack",
+   "output_json":"/g/emcf/schorb/solve.json",
    "input_stack": {
-       "owner": "gayathri",
-       "project": "MM2",
-       "name": "mm2_acquire_8bit_reimage_postVOXA_TEMCA2_rev1039",
-       "host": "em-131fs",
+       "owner": "test",
+       "project": "RENDERmodule_TEST",
+       "name":"test1_mipmap",
+       "host": "pc-emcf-16",
        "port": 8080,
-       "mongo_host": "em-131fs",
+       "mongo_host": "pc-emcf-16",
        "mongo_port": 27017,
-       "client_scripts": "/allen/aibs/pipeline/image_processing/volume_assembly/render-jars/production/scripts",
+       "client_scripts": "/g/emcf/software/render/render-ws-java-client/"
+                "src/main/scripts",
        "collection_type": "stack",
        "db_interface": "mongo"
    },
    "pointmatch": {
-       "owner": "gayathri_MM2",
-       "name": "mm2_acquire_8bit_reimage_postVOXA_TEMCA2_Fine_rev1039",
-       "host": "em-131fs",
+       "owner": "test",
+       "name": "dev_collection",
+       "host": "pc-emcf-16",
        "port": 8080,
-       "mongo_host": "em-131fs",
+       "mongo_host": "pc-emcf-16",
        "mongo_port": 27017,
-       "client_scripts": "/allen/aibs/pipeline/image_processing/volume_assembly/render-jars/production/scripts",
+       "client_scripts": "/g/emcf/software/render/render-ws-java-client/"
+                "src/main/scripts",
        "collection_type": "pointmatch",
        "db_interface": "mongo"
    },
    "output_stack": {
-       "owner": "danielk",
-       "project": "Tests",
+       "owner": "test",
+       "project": "RENDERmodule_TEST",
        "name": "python_montage_results",
-       "host": "em-131fs",
+       "host": "pc-emcf-16",
        "port": 8080,
-       "mongo_host": "em-131fs",
+       "mongo_host": "pc-emcf-16",
        "mongo_port": 27017,
-       "client_scripts": "/allen/aibs/pipeline/image_processing/volume_assembly/render-jars/production/scripts",
+       "client_scripts": "/g/emcf/software/render/render-ws-java-client/"
+                "src/main/scripts",
        "collection_type": "stack",
        "db_interface": "render"
    },
    "hdf5_options": {
-       "output_dir": "/allen/programs/celltypes/workgroups/em-connectomics/danielk/example_output/",
-       "chunks_per_file": -1
+       "output_dir": "/g/emcf/schorb/example_output/",
+       "chunks_per_file": 256
    },
    "matrix_assembly": {
        "depth": 2,

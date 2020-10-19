@@ -19,25 +19,24 @@ if __name__ == "__main__" and __package__ is None:
 
 example = {
     "render": {
-        "host": "http://em-131fs",
+        "host": "pc-emcf-16.embl.de",
         "port": 8080,
-        "owner": "gayathri",
-        "project": "MM2",
-        "client_scripts": "/allen/programs/celltypes/workgroups/em-connectomics/gayathrim/nc-em2/Janelia_Pipeline/render_20170613/render-ws-java-client/src/main/scripts"
-    },
-    "sparkhome": "/allen/programs/celltypes/workgroups/em-connectomics/ImageProcessing/utils/spark/",
-    "masterUrl":"spark://10.128.124.100:7077",
-    "logdir": "/allen/programs/celltypes/workgroups/em-connectomics/gayathrim/nc-em2/Janelia_Pipeline/scratch/sparkLogs/",
-    "jarfile": "/allen/programs/celltypes/workgroups/em-connectomics/gayathrim/nc-em2/Janelia_Pipeline/render_20170613/render-ws-spark-client/target/render-ws-spark-client-0.3.0-SNAPSHOT-standalone.jar",
+        "owner": "test",
+        "project": "RENDERmodule_TEST",
+        "client_scripts": (
+            "/g/emcf/software/render/render-ws-java-client/"
+            "src/main/scripts")},
+    "sparkhome": "/g/emcf/software/spark-3.0.0-bin-hadoop3.2",
+    "masterUrl":"spark://sb01-01.cluster.embl.de:7077",
+    "logdir": "/g/emcf/schorb/test",
+    "jarfile": "/g/emcf/software/render/render-ws-spark-client/target/render-ws-spark-client-2.3.1-SNAPSHOT-standalone.jar",
     "className":"org.janelia.render.client.spark.SIFTPointMatchClient",
-    "baseDataUrl":"http://em-131fs:8080/render-ws/v1",
-    "owner": "gayathri_MM2",
-    "collection": "mm2_rough_align_test",
-    "pairJson": "/allen/programs/celltypes/workgroups/em-connectomics/gayathrim/nc-em2/Janelia_Pipeline/scratch/rough/tilePairs/tile_pairs_mm2_montage_scape_test_z_1015_to_1035_dist_5.json",
+    "collection": "test2_mipmap_1",
+    "pairJson": "/g/emcf/schorb/tile_pairs_test2_mipmap_z_442_to_450_dist_50.json",
     "SIFTfdSize": 8,
     "SIFTsteps": 3,
     "matchMaxEpsilon": 20.0,
-    "maxFeatureCacheGb": 15,
+    "maxFeatureCacheGb": 8,
     "SIFTminScale": 0.38,
     "SIFTmaxScale": 0.82,
     "renderScale": 0.3,

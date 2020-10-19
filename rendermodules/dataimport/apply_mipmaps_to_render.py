@@ -22,14 +22,14 @@ example = {
         "client_scripts": (
             "/g/emcf/software/render/render-ws-java-client/"
             "src/main/scripts")},
-    "input_stack": "test1",
-    "output_stack": "test1_mipmap",
+    "input_stack": "test2",
+    "output_stack": "test2_mipmap",
     "mipmap_prefix": "file:///g/emcf/common/for_martin/SBEMdata/platy_20-05-27/processed/mipmaps",
     "imgformat": "png",
     "close_stack": True,
     "levels": 4,
-    "zstart": 21900,
-    "zend": 22300,
+    "zstart": 442,
+    "zend": 450,
     'pool_size':4,
     "output_json":"/g/emcf/software/render/test1.json"
 }

@@ -3,7 +3,7 @@ import json
 import os
 import subprocess
 import renderapi
-from ..module.render_module import RenderModule
+from rendermodules.module.render_module import RenderModule
 from rendermodules.pointmatch.schemas import TilePairClientParameters, TilePairClientOutputParameters
 
 if __name__ == "__main__" and __package__ is None:
@@ -12,21 +12,23 @@ if __name__ == "__main__" and __package__ is None:
 
 example = {
     "render": {
-        "host": "http://em-131fs",
+        "host": "pc-emcf-16.embl.de",
         "port": 8080,
-        "owner": "gayathri",
-        "project": "MM2",
-        "client_scripts": "/allen/programs/celltypes/workgroups/em-connectomics/gayathrim/nc-em2/Janelia_Pipeline/render_20170613/render-ws-java-client/src/main/scripts"
-    },
-    "minZ":1015,
-    "maxZ":1022,
-    "zNeighborDistance":0,
-    "stack":"mm2_acquire_8bit_reimage",
+        "owner": "test",
+        "project": "RENDERmodule_TEST",
+        "client_scripts": (
+            "/g/emcf/software/render/render-ws-java-client/"
+            "src/main/scripts")},
+    "minZ":442,
+    "maxZ":450,
+    "zNeighborDistance":1,
+    "stack":"test2_mipmap",
     "xyNeighborFactor": 0.9,
     "excludeCornerNeighbors":"true",
     "excludeSameLayerNeighbors":"false",
     "excludeCompletelyObscuredTiles":"true",
-    "output_dir":"/allen/programs/celltypes/workgroups/em-connectomics/gayathrim/nc-em2/Janelia_Pipeline/scratch/montageTilepairs"
+    "output_dir":"/g/emcf/schorb/",
+    "output_json":"/g/emcf/schorb/tiles.json",
 }
 
 

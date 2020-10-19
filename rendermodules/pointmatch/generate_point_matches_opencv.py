@@ -9,7 +9,7 @@ import pathlib2 as pathlib
 import renderapi
 from six.moves import urllib
 
-from .schemas import \
+from rendermodules.pointmatch.schemas import \
         PointMatchOpenCVParameters, \
         PointMatchClientOutputSchema
 from rendermodules.utilities import uri_utils
@@ -18,27 +18,29 @@ from rendermodules.utilities import uri_utils
 example = {
         "ndiv": 8,
         "matchMax": 10000,
-        "downsample_scale": 0.3,
-        "SIFT_nfeature": 50001,
-        "SIFT_noctave": 8,
-        "SIFT_sigma": 2.5,
-        "RANSAC_outlier": 5.0,
+        "downsample_scale": 0.4,
+        "SIFT_nfeature": 10000,
+        "SIFT_noctave": 3,
+        "SIFT_sigma": 1.5,
+        "RANSAC_outlier": 10.0,
         "FLANN_ntree": 5,
         "FLANN_ncheck": 50,
-        "ratio_of_dist": 0.8,
+        "ratio_of_dist": 1,
         "CLAHE_grid": 16,
         "CLAHE_clip": 2.5,
-        "pairJson": "/allen/programs/celltypes/production/wijem/workflow_data/production/reference_2018_06_21_21_44_56_00_00/jobs/job_27418/tasks/task_25846/tile_pairs_em_2d_raw_lc_stack_z_2908_to_2908_dist_0.json",
-        "input_stack": "em_2d_raw_lc_stack",
-        "match_collection": "dev_collection_can_delete",
+        "pairJson": "/g/emcf/schorb/tile_pairs_test2_mipmap_z_442_to_450_dist_50.json",
+        "input_stack": "test2_mipmap",
+        "match_collection": "3D_collection",
         "render": {
-              "owner": "TEM",
-              "project": "em_2d_montage_staging",
-              "host": "em-131db",
-              "port": 8080,
-              "client_scripts": "/allen/aibs/pipeline/image_processing/volume_assembly/render-jars/production/scripts"
-            },
-        "ncpus": 7
+            "host": "pc-emcf-16.embl.de",
+            "port": 8080,
+            "owner": "test",
+            "project": "RENDERmodule_TEST",
+            "client_scripts": (
+                "/g/emcf/software/render/render-ws-java-client/"
+                "src/main/scripts")},
+        "ncpus": 8,
+        "output_json":"/g/emcf/schorb/SIFT_openCV.json",
         }
 
 

@@ -4,26 +4,26 @@ import renderapi
 import logging
 from functools import partial
 from renderapi.transform import AffineModel, RigidModel, SimilarityModel
-from ..module.render_module import RenderModule
-from .schemas import RegisterSectionSchema, RegisterSectionOutputSchema
+from rendermodules.module.render_module import RenderModule
+from rendermodules.registration.schemas import RegisterSectionSchema, RegisterSectionOutputSchema
 from rendermodules.stack.consolidate_transforms import consolidate_transforms
 
 example = {
     "render": {
-        'host':'em-131db',
-        'port':8080,
-        'owner':"TEM",
-        'project':"247488_8R",
-        'client_scripts':"/allen/aibs/pipeline/image_processing/volume_assembly/render-jars/production/scripts",
-        'memGB':'2G'
-    },
-    "reference_stack": "combined_133_pre_fix",
-    "moving_stack": "combined_133_pre_fix",
-    "output_stack": "output_stack",
-    "match_collection": "rough_align_fixes",
+        "host": "pc-emcf-16.embl.de",
+        "port": 8080,
+        "owner": "test",
+        "project": "RENDERmodule_TEST",
+        "client_scripts": (
+            "/g/emcf/software/render/render-ws-java-client/"
+            "src/main/scripts")},
+    "reference_stack": "test1_mipmap",
+    "moving_stack": "test1_mipmap",
+    "output_stack": "test1_registered",
+    "match_collection": "dev_collection",
     "registration_model": "Similarity",
-    "reference_z": 1000,
-    "moving_z": 1001,
+    "reference_z": 21900,
+    "moving_z": 21950,
     "overwrite_output": True,
     "consolidate_transforms": True
 }
@@ -38,6 +38,7 @@ def fit_model_to_points(render, ref_stack, moving_stack, match_collection, match
     for i, tspec in enumerate(ref_tspecs):
         pid = tspec.tileId
         pgroup = tspec.layout.sectionId
+        
         match = renderapi.pointmatch.get_matches_involving_tile(match_collection, pgroup, pid, owner=match_owner, render=render)[0]
         p_pts = []
         q_pts = []

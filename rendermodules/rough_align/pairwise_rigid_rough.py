@@ -12,23 +12,22 @@ from functools import partial
 
 example = {
         "render": {
-            "host": "em-131fs",
-            "port": 8987,
-            "owner": "TEM",
-            "project": "17797_1R",
-            "client_scripts": ("/allen/aibs/pipeline/image_processing/"
-                               "volume_assembly/render-jars/production/scripts")
-          },
-        "input_stack": "em_2d_montage_solved_py_0_01_mapped",
+            "host": "pc-emcf-16.embl.de",
+            "port": 8080,
+            "owner": "test",
+            "project": "RENDERmodule_TEST",
+            "client_scripts": (
+                "/g/emcf/software/render/render-ws-java-client/"
+                "src/main/scripts")},
+        "input_stack": "test1_mipmap",
         "anchor_stack": None,
         "output_stack": "test_pre_rigid_with_anchors_plus",
-        "match_collection": "chunk_rough_align_point_matches",
+        "match_collection": "dev_collection",        
         "close_stack": True,
-        "minZ": 8500,
-        "maxZ": 9000,
-        "gap_file": "/allen/aibs/pipeline/image_processing/volume_assembly/rough_align_test_data/pairwise/gap_reasons.json",
+        "minZ": 21900,
+        "maxZ": 22000,
         "pool_size": 20,
-        "output_json": "test_output.json",
+        "output_json": "/g/emcf/schorb/test_output.json",
         "overwrite_zlayer": True,
         "translate_to_positive": True,
         "translation_buffer": [50, 50]
