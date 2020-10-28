@@ -164,24 +164,12 @@ class GenerateSBEMImageTileSpecs(StackOutputModule):
         
         
         # create stack and fill resolution parameters
-        # renderapi.stack.create_stack(output_stack,
-        #                              render=render,
-        #                              stackResolutionX=resolution[0],
-        #                              stackResolutionY=resolution[1],
-        #                              stackResolutionZ=resolution[2])
-        
-        if output_stack not in render.run(
-                renderapi.render.get_stacks_by_owner_project):
-            # stack does not exist
-            render.run(renderapi.stack.create_stack,
-                       output_stack,
-                       stackResolutionX=resolution[0],
-                       stackResolutionY=resolution[1],
-                       stackResolutionZ=resolution[2])
         
         
 
-        self.output_tilespecs_to_stack(tspecs)
+        self.output_tilespecs_to_stack(tspecs,stackResolutionX=resolution[0],
+                                       stackResolutionY=resolution[1],
+                                       stackResolutionZ=resolution[2])
 
 # I don know what this does... so leave it out
         # try:
