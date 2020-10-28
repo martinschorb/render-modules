@@ -94,18 +94,18 @@ class StackOutputModule(RenderModule):
 
         renderapi.stack.create_stack(output_stack,
                                      render=render,
-                                     stackResolutionX=self.stackResolutionX,
-                                     stackResolutionY=self.stackResolutionY,
-                                     stackResolutionZ=self.stackResolutionZ)
+                                     stackResolutionX=self.output_stackVersion.stackResolutionX,
+                                     stackResolutionY=self.output_stackVersion.stackResolutionY,
+                                     stackResolutionZ=self.output_stackVersion.stackResolutionZ)
                                     
         if output_stack not in render.run(
                 renderapi.render.get_stacks_by_owner_project):
             # stack does not exist
             render.run(renderapi.stack.create_stack,
                        output_stack,
-                       stackResolutionX=self.stackResolutionX,
-                       stackResolutionY=self.stackResolutionY,
-                       stackResolutionZ=self.stackResolutionZ)
+                       stackResolutionX=self.output_stackVersion.stackResolutionX,
+                       stackResolutionY=self.output_stackVersion.stackResolutionY,
+                       stackResolutionZ=self.output_stackVersion.stackResolutionZ)
 
         render.run(renderapi.stack.set_stack_state,
                    output_stack, 'LOADING')

@@ -164,13 +164,13 @@ class GenerateSBEMImageTileSpecs(StackOutputModule):
         
         
         # create stack and fill resolution parameters
-        
+        self.output_stackVersion.stackResolutionX=resolution[0]
+        self.output_stackVersion.stackResolutionY=resolution[1]
+        self.output_stackVersion.stackResolutionZ=resolution[2]
         
 
-        self.output_tilespecs_to_stack(tspecs,stackResolutionX=resolution[0],
-                                       stackResolutionY=resolution[1],
-                                       stackResolutionZ=resolution[2])
-
+        self.output_tilespecs_to_stack(tspecs)
+                                       
 # I don know what this does... so leave it out
         # try:
         #     self.output({'stack': self.output_stack})
