@@ -85,8 +85,8 @@ class GenerateSBEMImageTileSpecs(StackOutputModule):
             cameraId='3View',
             # imageCol=imgdata['img_meta']['raster_pos'][0],
             # imageRow=imgdata['img_meta']['raster_pos'][1],
-            stageX = tile['glob_x']/10,
-            stageY = tile['glob_y']/10,
+            stageX = tile['glob_x'],
+            stageY = tile['glob_y'],
             rotation = 0.0,
             pixelsize = pxs)
 
@@ -127,29 +127,13 @@ class GenerateSBEMImageTileSpecs(StackOutputModule):
 
             with open(conffile) as cf: cl = cf.read().splitlines()
 
-            config = parse_adoc(cl)
-            
-            # tileposfile = os.path.join('meta','logs','tilepos'+acq_suffix)
-            
-            # with open(tileposfile) as tpf: tilepos0 = tpf.read().splitlines()
-            
-            # tilepos = []
-            # posid = []
-            
-            # for tile in tilepos0: 
-            #     tilepos.append(tile.split(';')[1:]) 
-            #     posid.append(tile.split(';')[0])
+            config = parse_adoc(cl)            
 
 
             pxs = float(config['grab_frame_pixel_size'][0])#/1000  # in um
             z_thick = float(config['slice_thickness'][0])#/1000  # in um
 
-            # generate the individual transformation matrices
-            # 1)  The scale and rotation information form the map item
-            # mat = np.diag((pxs,pxs,z_thick))
-
-            # mat_s = np.concatenate((mat,[[0],[0],[0]]),axis=1)
-            # mat_s = np.concatenate((mat_s,[[0,0,0,1]]))
+            resolution = [pxs,pxs,z_thick]
 
             tspecs=[]
             # z=0
@@ -162,7 +146,7 @@ class GenerateSBEMImageTileSpecs(StackOutputModule):
                     # mipmap_args.append((f1,os.path.realpath(downdir)))
                     tspecs.append(tilespeclist)
 
-        return tspecs #,mipmap_args
+        return tspecs,resolution #,mipmap_args
 
 
     def run(self):
@@ -170,22 +154,29 @@ class GenerateSBEMImageTileSpecs(StackOutputModule):
         #     meta = json.load(f)
 
         imgdir = self.args.get('image_directory')
-
+        output_stack = self.args.get('stack')
+        render = self.args.get('render')
+        
         print(imgdir)
 
-        tspecs = self.ts_from_sbemimage(imgdir)
-                    # imgdir,
-                    # img_coords[img['img_path']][0] - minX,
-                    # img_coords[img['img_path']][1] - minY,
-                    # minint=self.args['minimum_intensity'],
-                    # maxint=self.args['maximum_intensity'],
-                    # width=roidata['camera_info']['width'],
-                    # height=roidata['camera_info']['height'],
-                    # z=self.zValues[0], sectionId=self.args.get('sectionId'),
-                    # scopeId=roidata['temca_id'],
-                    # cameraId=roidata['camera_info']['camera_id'],
-                    # pixelsize=pixelsize,
-                    # maskUrl=self.args['maskUrl_uri']) for img in imgdata]
+        tspecs,resolution = self.ts_from_sbemimage(imgdir)
+                    
+        
+        
+        # create stack and fill resolution parameters
+        renderapi.stack.create_stack(output_stack,
+                                     render=render,
+                                     stackResolutionX=resolution[0],
+                                     stackResolutionY=resolution[1],
+                                     stackResolutionZ=resolution[2])
+        
+        if output_stack not in render.run(
+                renderapi.render.get_stacks_by_owner_project):
+            # stack does not exist
+            render.run(renderapi.stack.create_stack,
+                       output_stack)
+        
+        
 
         self.output_tilespecs_to_stack(tspecs)
 
