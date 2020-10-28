@@ -4,9 +4,9 @@ from bigfeta import bigfeta
 from rendermodules.solver.schemas import BigFetaSchema, BigFetaOutputSchema
 
 montage_example = {
-   "first_section": 21900,
-   "last_section": 22300,
-   "solve_type": "3D",
+   "first_section": 442,
+   "last_section": 450,
+   "solve_type": "montage",
    "close_stack": "True",
    "transformation": "affine",
    "start_from_file": "",
@@ -15,7 +15,7 @@ montage_example = {
    "input_stack": {
        "owner": "test",
        "project": "RENDERmodule_TEST",
-       "name":"test1_mipmap",
+       "name":"test2_mipmap",
        "host": "pc-emcf-16",
        "port": 8080,
        "mongo_host": "pc-emcf-16",
@@ -27,7 +27,7 @@ montage_example = {
    },
    "pointmatch": {
        "owner": "test",
-       "name": "dev_collection",
+       "name": "test2_mipmap_2D",
        "host": "pc-emcf-16",
        "port": 8080,
        "mongo_host": "pc-emcf-16",
@@ -40,7 +40,7 @@ montage_example = {
    "output_stack": {
        "owner": "test",
        "project": "RENDERmodule_TEST",
-       "name": "python_montage_results",
+       "name": "2D_montage_results",
        "host": "pc-emcf-16",
        "port": 8080,
        "mongo_host": "pc-emcf-16",
@@ -51,7 +51,7 @@ montage_example = {
        "db_interface": "render"
    },
    "hdf5_options": {
-       "output_dir": "/g/emcf/schorb/example_output/",
+       "output_dir": "/g/emcf/schorb/",
        "chunks_per_file": 256
    },
    "matrix_assembly": {

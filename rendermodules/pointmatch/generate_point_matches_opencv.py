@@ -28,9 +28,9 @@ example = {
         "ratio_of_dist": 1,
         "CLAHE_grid": 16,
         "CLAHE_clip": 2.5,
-        "pairJson": "/g/emcf/schorb/tile_pairs_test2_mipmap_z_442_to_450_dist_50.json",
+        "pairJson": "/g/emcf/schorb/tile_pairs_test2_mipmap_z_442_to_450_dist_1.json",
         "input_stack": "test2_mipmap",
-        "match_collection": "3D_collection",
+        "match_collection": "3D_openCV",
         "render": {
             "host": "pc-emcf-16.embl.de",
             "port": 8080,
@@ -39,7 +39,7 @@ example = {
             "client_scripts": (
                 "/g/emcf/software/render/render-ws-java-client/"
                 "src/main/scripts")},
-        "ncpus": 8,
+        "ncpus": 16,
         "output_json":"/g/emcf/schorb/SIFT_openCV.json",
         }
 

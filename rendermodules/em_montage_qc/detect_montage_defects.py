@@ -9,25 +9,25 @@ import requests
 from six import viewkeys
 from rendermodules.residuals import compute_residuals as cr
 from rendermodules.em_montage_qc.schemas import DetectMontageDefectsParameters, DetectMontageDefectsParametersOutput
-from ..module.render_module import RenderModule, RenderModuleException
+from rendermodules.module.render_module import RenderModule, RenderModuleException
 from rendermodules.em_montage_qc.plots import plot_section_maps
 
 example = {
     "render":{
-        "host": "http://em-131fs",
+        "host": "http://pc-emcf-16",
         "port": 8080,
-        "owner": "danielk",
-        "project": "Seams",
-        "client_scripts": "/allen/programs/celltypes/workgroups/em-connectomics/gayathrim/nc-em2/Janelia_Pipeline/render_latest/render-ws-java-client/src/main/scripts"
+        "owner": "test",
+        "project": "RENDERmodule_TEST",
+        "client_scripts": "/g/emcf/software/render/render-ws-java-client/src/main/scripts"
     },
-    "prestitched_stack": "2_sections_near_crack_fine_lam_1e3",
-    "poststitched_stack": "2_sections_near_crack_fine_lam_1e3_omitted_auto",
-    "match_collection": "NewPMS_combined_with_montage",
-    "out_html_dir":"/allen/programs/celltypes/workgroups/em-connectomics/gayathrim/scratch",
+    "prestitched_stack": "2D_montage_results",
+    "poststitched_stack": "2D_montage",
+    "match_collection": "test2_mipmap_2D",
+    "out_html_dir":"/g/emcf/schorb/render-output",
     "plot_sections":"True",
-    "minZ": 1028,
-    "maxZ": 1029,
-    "pool_size": 20
+    "minZ": 442,
+    "maxZ": 450,
+    "pool_size": 8
 }
 
 
