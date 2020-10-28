@@ -155,6 +155,7 @@ class GenerateSBEMImageTileSpecs(StackOutputModule):
 
         imgdir = self.args.get('image_directory')
         output_stack = self.args.get('stack')
+        render=self.render
         
         print(imgdir)
 
@@ -164,7 +165,7 @@ class GenerateSBEMImageTileSpecs(StackOutputModule):
         
         # create stack and fill resolution parameters
         renderapi.stack.create_stack(output_stack,
-                                     render=self.render,
+                                     render=render,
                                      stackResolutionX=resolution[0],
                                      stackResolutionY=resolution[1],
                                      stackResolutionZ=resolution[2])
