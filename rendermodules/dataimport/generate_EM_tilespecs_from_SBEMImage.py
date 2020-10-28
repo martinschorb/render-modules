@@ -174,7 +174,10 @@ class GenerateSBEMImageTileSpecs(StackOutputModule):
                 renderapi.render.get_stacks_by_owner_project):
             # stack does not exist
             render.run(renderapi.stack.create_stack,
-                       output_stack)
+                       output_stack,
+                       stackResolutionX=resolution[0],
+                       stackResolutionY=resolution[1],
+                       stackResolutionZ=resolution[2])
         
         
 
