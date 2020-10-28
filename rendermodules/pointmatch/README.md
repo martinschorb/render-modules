@@ -231,3 +231,18 @@ collectionId = Nested(
       required=True,
       description="number of tile pairs in collection")
 ```
+
+
+
+## [generate_point_matches_spark.py](generate_point_matches_spark.py)<a name="pm_spark"></a>
+
+Create pair-wise associations between neighboring tiles (in 2D or 3D).
+
+input:
+
+```
+masterUrl = Str(required=True, description=(
+        "spark master url.  For local execution local[num_procs,num_retries]"))
+```
+
+SIFT parameters like above.
