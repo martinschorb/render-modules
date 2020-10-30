@@ -25,17 +25,20 @@ example_input = {
     "render": {
         "host": "pc-emcf-16.embl.de",
         "port": 8080,
-        "owner": "test",
-        "project": "RENDERmodule_TEST",
+        "owner": "SBEM",
+        "project": "tests",
         "client_scripts": (
             "/g/emcf/software/render/render-ws-java-client/"
             "src/main/scripts")},
     "image_directory": "/g/emcf/common/for_martin/SBEMdata/platy_20-05-27",
-    "stack": "test2",
+    "stack": "test_resolution",
     "overwrite_zlayer": True,
     "pool_size": 4,
     "close_stack": True,
-    "z_index": 1
+    "z_index": 1,
+    "output_stackVersion":{
+        "stackResolutionX":10.1        
+        }
 }
 
 
@@ -154,19 +157,20 @@ class GenerateSBEMImageTileSpecs(StackOutputModule):
         #     meta = json.load(f)
 
         imgdir = self.args.get('image_directory')
-        output_stack = self.args.get('stack')
-        render=self.render
         
-        print(imgdir)
+                      
+        # print(imgdir)
 
         tspecs,resolution = self.ts_from_sbemimage(imgdir)
-                    
-        
         
         # create stack and fill resolution parameters
-        self.output_stackVersion.stackResolutionX=resolution[0]
-        self.output_stackVersion.stackResolutionY=resolution[1]
-        self.output_stackVersion.stackResolutionZ=resolution[2]
+        
+        
+        self.args["output_stackVersion"]["stackResolutionX"]=resolution[0]
+        self.args["output_stackVersion"]["stackResolutionY"]=resolution[1]
+        self.args["output_stackVersion"]["stackResolutionZ"]=resolution[2]       
+       
+
         
 
         self.output_tilespecs_to_stack(tspecs)

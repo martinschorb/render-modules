@@ -91,24 +91,26 @@ class StackOutputModule(RenderModule):
         pool_size = self.pool_size if pool_size is None else pool_size
         overwrite_zlayer = (self.overwrite_zlayer if overwrite_zlayer is None
                             else overwrite_zlayer)
-
+        
+        sR=self.args.get("output_stackVersion")      
+        
         renderapi.stack.create_stack(output_stack,
-                                     render=render,
-                                     stackResolutionX=self.output_stackVersion.stackResolutionX,
-                                     stackResolutionY=self.output_stackVersion.stackResolutionY,
-                                     stackResolutionZ=self.output_stackVersion.stackResolutionZ)
+                                      render=render,
+                                      stackResolutionX=sR["stackResolutionX"],
+                                      stackResolutionY=sR["stackResolutionY"],
+                                      stackResolutionZ=sR["stackResolutionZ"])
                                     
         if output_stack not in render.run(
                 renderapi.render.get_stacks_by_owner_project):
             # stack does not exist
             render.run(renderapi.stack.create_stack,
-                       output_stack,
-                       stackResolutionX=self.output_stackVersion.stackResolutionX,
-                       stackResolutionY=self.output_stackVersion.stackResolutionY,
-                       stackResolutionZ=self.output_stackVersion.stackResolutionZ)
+                        output_stack,
+                        stackResolutionX=sR["stackResolutionX"],
+                        stackResolutionY=sR["stackResolutionY"],
+                        stackResolutionZ=sR["stackResolutionZ"])
 
         render.run(renderapi.stack.set_stack_state,
-                   output_stack, 'LOADING')
+                    output_stack, 'LOADING')
 
         if overwrite_zlayer:
             self.delete_zValues(output_stack=output_stack, render=render,
