@@ -72,6 +72,7 @@ class GenerateSBEMImageTileSpecs(StackOutputModule):
                                  M00=pxs,
                                  M11=pxs)
 
+        print("Processing tile "+tile['tileid']+" metadata for Render.")
         
         
         ts = renderapi.tilespec.TileSpec(
@@ -81,15 +82,15 @@ class GenerateSBEMImageTileSpecs(StackOutputModule):
             width=tile['tile_width'],
             height=tile['tile_height'],
             minint=0, maxint=255,
-            tforms=[tf_scale,tf_trans],
+            tforms=[tf_trans],
             # imagePyramid=ip,
             sectionId=tile['slice_counter'],
             scopeId='3View',
             cameraId='3View',
             # imageCol=imgdata['img_meta']['raster_pos'][0],
             # imageRow=imgdata['img_meta']['raster_pos'][1],
-            stageX = tile['glob_x'],
-            stageY = tile['glob_y'],
+            stageX = float(tile['glob_x'])/pxs,
+            stageY = float(tile['glob_y'])/pxs,
             rotation = 0.0,
             pixelsize = pxs)
 
@@ -116,6 +117,7 @@ class GenerateSBEMImageTileSpecs(StackOutputModule):
 
         mfiles = glob.glob(mfile0+'*')
 
+        tspecs=[]        
 
         for mfile in mfiles:
 
@@ -136,10 +138,7 @@ class GenerateSBEMImageTileSpecs(StackOutputModule):
             pxs = float(config['grab_frame_pixel_size'][0])#/1000  # in um
             z_thick = float(config['slice_thickness'][0])#/1000  # in um
 
-            resolution = [pxs,pxs,z_thick]
-
-            tspecs=[]
-            # z=0
+            resolution = [pxs,pxs,z_thick]    
 
             for line in mdl:
                 if line.startswith('TILE: '):

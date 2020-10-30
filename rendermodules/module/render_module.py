@@ -92,22 +92,31 @@ class StackOutputModule(RenderModule):
         overwrite_zlayer = (self.overwrite_zlayer if overwrite_zlayer is None
                             else overwrite_zlayer)
         
-        sR=self.args.get("output_stackVersion")      
+        if "stackResolutionX" in self.args.get("output_stackVersion").keys():
+            sR=self.args.get("output_stackVersion") 
+            stackResolutionX=sR["stackResolutionX"]
+            stackResolutionY=sR["stackResolutionY"]
+            stackResolutionZ=sR["stackResolutionZ"]
+        else:
+            stackResolutionX=None
+            stackResolutionY=None
+            stackResolutionZ=None
+        
         
         renderapi.stack.create_stack(output_stack,
                                       render=render,
-                                      stackResolutionX=sR["stackResolutionX"],
-                                      stackResolutionY=sR["stackResolutionY"],
-                                      stackResolutionZ=sR["stackResolutionZ"])
+                                      stackResolutionX=stackResolutionX,
+                                      stackResolutionY=stackResolutionY,
+                                      stackResolutionZ=stackResolutionZ)
                                     
         if output_stack not in render.run(
                 renderapi.render.get_stacks_by_owner_project):
             # stack does not exist
             render.run(renderapi.stack.create_stack,
                         output_stack,
-                        stackResolutionX=sR["stackResolutionX"],
-                        stackResolutionY=sR["stackResolutionY"],
-                        stackResolutionZ=sR["stackResolutionZ"])
+                        stackResolutionX=stackResolutionX,
+                        stackResolutionY=stackResolutionY,
+                        stackResolutionZ=stackResolutionZ)
 
         render.run(renderapi.stack.set_stack_state,
                     output_stack, 'LOADING')
