@@ -13,8 +13,8 @@ montage_example = {
    "output_mode": "stack",
    "output_json":"/g/emcf/schorb/solve.json",
    "input_stack": {
-       "owner": "test",
-       "project": "RENDERmodule_TEST",
+       "owner": "SBEM",
+       "project": "tests",
        "name":"platy_test0_mipmap",
        "host": "pc-emcf-16.embl.de",
        "port": 8080,       
@@ -23,11 +23,13 @@ montage_example = {
        "collection_type": "stack",
        "db_interface": "render"
    },
-   "pointmatch": {
-       "owner": "test",
+   "pointmatch": {    
+       "owner": "SBEM",
        "name": "platy_test0_mipmap_2D",
-       "host": "pc-emcf-16.embl.de",
-       "port": 8080,       
+       "host": "pc-emcf-16",
+       "port": 8080,
+       "mongo_host": "pc-emcf-16",
+       "mongo_port": 27017,
        "client_scripts": "/g/emcf/software/render/render-ws-java-client/"
                 "src/main/scripts",
        "collection_type": "pointmatch",
@@ -36,9 +38,11 @@ montage_example = {
    "output_stack": {
        "owner": "SBEM",
        "project": "tests",
-       "name": "2D_montage_results",
-       "host": "pc-emcf-16.embl.de",
-       "port": 8080,       
+       "name": "testsolve_results",
+       "host": "pc-emcf-16",
+       "port": 8080,
+       "mongo_host": "pc-emcf-16",
+       "mongo_port": 27017,
        "client_scripts": "/g/emcf/software/render/render-ws-java-client/"
                 "src/main/scripts",
        "collection_type": "stack",

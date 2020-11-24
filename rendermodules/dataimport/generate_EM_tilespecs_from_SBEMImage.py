@@ -65,8 +65,8 @@ class GenerateSBEMImageTileSpecs(StackOutputModule):
         ip[0] = renderapi.image_pyramid.MipMap(imageUrl='file://' + filepath)        
 
         tf_trans = renderapi.transform.AffineModel(
-                                 B0=tile['glob_x']/pxs,
-                                 B1=tile['glob_y']/pxs)
+                                 B0=float(tile['glob_x'])/pxs,
+                                 B1=float(tile['glob_y'])/pxs)
         
         # tf_scale = renderapi.transform.AffineModel(
         #                          M00=pxs,
@@ -132,10 +132,11 @@ class GenerateSBEMImageTileSpecs(StackOutputModule):
 
             with open(conffile) as cf: cl = cf.read().splitlines()
 
-            config = parse_adoc(cl)            
+            config = parse_adoc(cl[:cl.index('[overviews]')])            
 
 
-            pxs = float(config['grab_frame_pixel_size'][0])#/1000  # in um
+            pxs = float(config['pixel_size'][0].strip('[]'))#/1000  # in um
+    
             z_thick = float(config['slice_thickness'][0])#/1000  # in um
 
             resolution = [pxs,pxs,z_thick]    
@@ -149,7 +150,6 @@ class GenerateSBEMImageTileSpecs(StackOutputModule):
                     tspecs.append(tilespeclist)
 
         return tspecs,resolution #,mipmap_args
-
 
     def run(self):
         # with open(self.args['metafile'], 'r') as f:

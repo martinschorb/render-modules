@@ -14,21 +14,19 @@ example = {
     "render": {
         "host": "pc-emcf-16.embl.de",
         "port": 8080,
-        "owner": "test",
-        "project": "RENDERmodule_TEST",
-        "client_scripts": (
-            "/g/emcf/software/render/render-ws-java-client/"
-            "src/main/scripts")},
-    "minZ":442,
-    "maxZ":450,
-    "zNeighborDistance":1,
-    "stack":"test2_mipmap",
+        "owner": "SBEM",
+        "project": "seaurchin_paolo_test",
+        "client_scripts": "/g/emcf/software/render/render-ws-java-client/src/main/scripts"},
+    "minZ":0,
+    "maxZ":2348,
+    "zNeighborDistance":0,
+    "stack":"giovanna_test0_mipmaps",
     "xyNeighborFactor": 0.9,
-    "excludeCornerNeighbors":"true",
-    "excludeSameLayerNeighbors":"false",
-    "excludeCompletelyObscuredTiles":"true",
-    "output_dir":"/g/emcf/schorb/",
-    "output_json":"/g/emcf/schorb/tiles.json",
+    "excludeCornerNeighbors":"True",
+    "excludeSameLayerNeighbors":"False",
+    "excludeCompletelyObscuredTiles":"False",
+    "output_dir":"/g/emcf/schorb/render-output/",
+    "output_json":"/g/emcf/schorb/render-output/tiles_test2_montage.json"
 }
 
 
