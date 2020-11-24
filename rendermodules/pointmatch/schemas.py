@@ -7,7 +7,7 @@ from marshmallow import post_load
 from rendermodules.module.schemas import (
     RenderParameters, FeatureExtractionParameters, FeatureRenderParameters,
     FeatureStorageParameters, MatchDerivationParameters,
-    RenderParametersMatchWebServiceParameters, SparkOptions, SparkParameters,
+    RenderParametersMatchWebServiceParameters, SparkOptions, SparkParameters, SlurmSparkParameters,
     FeatureRenderClipParameters)
 
 
@@ -86,13 +86,22 @@ class SIFTPointMatchParameters(
         FeatureRenderClipParameters,
         FeatureStorageParameters, MatchDerivationParameters,
         RenderParametersMatchWebServiceParameters):
+    
     pairJson = InputFile(required=True, description=(
-        "JSON file where tile pairs are stored (.json, .gz, .zip)"))
+        "JSON file where tile pairs are stored (.json, .gz, .zip)"))    
+    
 
 
 class PointMatchClientParametersSpark(SparkParameters,
                                       SIFTPointMatchParameters):
     pass
+
+class PointMatchClientParametersSlurmSpark(SlurmSparkParameters,
+                                      SIFTPointMatchParameters):
+    logdir = OutputDir(
+        required=False,
+        description="location to set logging for slurm-spark command"
+    )
 
 
 class CollectionId(mm.Schema):

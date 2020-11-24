@@ -24,3 +24,7 @@ class SparkOptions(argschema.schemas.DefaultSchema):
 class SparkParameters(SparkOptions):
     masterUrl = Str(required=True, description=(
         "spark master url.  For local execution local[num_procs,num_retries]"))
+    
+class SlurmSparkParameters(SparkOptions):
+    masterUrl = Str(required=False, description=(
+        "spark master url.  For local execution local[num_procs,num_retries]"))

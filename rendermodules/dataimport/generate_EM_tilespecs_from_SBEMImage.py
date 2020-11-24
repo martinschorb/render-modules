@@ -135,7 +135,7 @@ class GenerateSBEMImageTileSpecs(StackOutputModule):
             config = parse_adoc(cl[:cl.index('[overviews]')])            
 
 
-            pxs = float(config['pixel_size'][0].strip('[]'))#/1000  # in um
+            pxs = float(config['pixel_size'][0].strip('[],'))#/1000  # in um
     
             z_thick = float(config['slice_thickness'][0])#/1000  # in um
 

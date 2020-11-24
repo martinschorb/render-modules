@@ -6,7 +6,7 @@ import argschema
 import renderapi
 from rendermodules.module.schemas import (
     RenderParameters, InputStackParameters, OutputStackParameters,
-    SparkParameters)
+    SparkParameters, SparkOptions)
 
 
 class RenderModuleException(Exception):
@@ -218,6 +218,65 @@ class SparkModule(argschema.ArgSchemaParser):
         return subprocess.check_call(
             self.get_spark_command(**self.args), **kwargs)
 
+class SlurmSparkModule(argschema.ArgSchemaParser):
+    default_schema = SparkOptions
+    
+    @staticmethod
+    def sanitize_cmd(cmd):
+        def jbool_str(c):
+            return str(c) if type(c) is not bool else "true" if c else "false"
+        if any([i is None for i in cmd]):
+            raise SparkModuleError(
+                'missing argument in command "{}"'.format(map(str, cmd)))
+        return list(map(jbool_str, cmd))
+
+    @staticmethod
+    def get_cmd_opt(v, flag=None):
+        return [] if v is None else [v] if flag is None else [flag, v]
+
+    @staticmethod
+    def get_flag_cmd(v, flag=None):
+        # for arity 0
+        return [flag] if v else []
+
+    @classmethod
+    def get_spark_call(cls, masterUrl=None, jarfile=None, className=None,
+                       driverMemory=None, memory=None, sparkhome=None,
+                       spark_files=None, spark_conf=None, **kwargs):
+        get_cmd_opt = cls.get_cmd_opt
+        sparksub = os.path.join(sparkhome, 'bin', 'spark-submit')
+
+        sparkfileargs = []
+        if spark_files is not None:
+            for sparkfile in spark_files:
+                sparkfileargs += ['--files', sparkfile]
+        sparkconfargs = []
+        if spark_conf is not None:
+            for key, value in spark_conf.items():
+                sparkconfargs += ['--conf', "{}='{}'".format(key, value)]
+
+        cmd = ([sparksub, '--master', masterUrl] +
+               get_cmd_opt(driverMemory, '--driver-memory') +
+               get_cmd_opt(memory, '--executor-memory') +
+               sparkfileargs +
+               sparkconfargs +
+               ['--class', className,
+               jarfile])
+        return cls.sanitize_cmd(cmd)
+
+    @classmethod
+    def get_args(cls, **kwargs):
+        """override to append to spark call"""
+        return cls.sanitize_cmd([])
+
+    @classmethod
+    def get_spark_command(cls, **kwargs):
+        c = cls.get_spark_call(**kwargs) + cls.get_args(**kwargs)
+        return c
+
+    def run_spark_command(self, **kwargs):
+        return subprocess.check_call(
+            self.get_spark_command(**self.args), **kwargs)
 
 if __name__ == '__main__':
     example_input = {
