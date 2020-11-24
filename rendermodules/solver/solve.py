@@ -23,7 +23,7 @@ montage_example = {
        "collection_type": "stack",
        "db_interface": "render"
    },
-   "pointmatch": {
+   "pointmatch": {    
        "owner": "SBEM",
        "name": "platy_test0_mipmap_2D",
        "host": "pc-emcf-16",
