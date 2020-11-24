@@ -69,7 +69,7 @@ class TilePairClientModule(RenderModule):
                         excludeSameLayerNeighbors=self.args['excludeSameLayerNeighbors'],
                         excludeCompletelyObscuredTiles=self.args['excludeCompletelyObscuredTiles'])
 
-        self.output({'tile_pair_file':tilepairJsonFile})
+      #  self.output({'tile_pair_file':tilepairJsonFile})
         
 
 if __name__ == "__main__":
