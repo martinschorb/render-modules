@@ -109,10 +109,12 @@ class AddMipMapsToStack(StackTransitionModule):
 
         output_stack = (self.args['input_stack'] if
                         self.args['output_stack'] is None
-                        else self.args['output_stack'])
+                        else self.args['output_stack'])  
         
-        self.args["output_stackVersion"]=self.args.get("input_stackVersion")        
-
+        input_params = renderapi.stack.get_full_stack_metadata(self.args['input_stack'],render=self.render)
+                
+        self.args["output_stackVersion"]=input_params['currentVersion']
+        
         self.output_tilespecs_to_stack(tilespecs, output_stack,
                                        sharedTransforms=identified_tforms)
 

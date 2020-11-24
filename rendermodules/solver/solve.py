@@ -6,28 +6,26 @@ from rendermodules.solver.schemas import BigFetaSchema, BigFetaOutputSchema
 montage_example = {
    "first_section": 442,
    "last_section": 450,
-   "solve_type": "montage",
+   "solve_type": "3D",
    "close_stack": "True",
-   "transformation": "affine",
+   "transformation": "rigid",
    "start_from_file": "",
    "output_mode": "stack",
    "output_json":"/g/emcf/schorb/solve.json",
    "input_stack": {
-       "owner": "test",
-       "project": "RENDERmodule_TEST",
-       "name":"test2_mipmap",
-       "host": "pc-emcf-16",
-       "port": 8080,
-       "mongo_host": "pc-emcf-16",
-       "mongo_port": 27017,
+       "owner": "SBEM",
+       "project": "tests",
+       "name":"platy_test0_mipmap",
+       "host": "pc-emcf-16.embl.de",
+       "port": 8080,       
        "client_scripts": "/g/emcf/software/render/render-ws-java-client/"
                 "src/main/scripts",
        "collection_type": "stack",
-       "db_interface": "mongo"
+       "db_interface": "render"
    },
    "pointmatch": {
-       "owner": "test",
-       "name": "test2_mipmap_2D",
+       "owner": "SBEM",
+       "name": "platy_test0_mipmap_2D",
        "host": "pc-emcf-16",
        "port": 8080,
        "mongo_host": "pc-emcf-16",
@@ -35,12 +33,12 @@ montage_example = {
        "client_scripts": "/g/emcf/software/render/render-ws-java-client/"
                 "src/main/scripts",
        "collection_type": "pointmatch",
-       "db_interface": "mongo"
+       "db_interface": "render"
    },
    "output_stack": {
-       "owner": "test",
-       "project": "RENDERmodule_TEST",
-       "name": "2D_montage_results",
+       "owner": "SBEM",
+       "project": "tests",
+       "name": "testsolve_results",
        "host": "pc-emcf-16",
        "port": 8080,
        "mongo_host": "pc-emcf-16",

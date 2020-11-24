@@ -97,26 +97,31 @@ class StackOutputModule(RenderModule):
             stackResolutionX=sR["stackResolutionX"]
             stackResolutionY=sR["stackResolutionY"]
             stackResolutionZ=sR["stackResolutionZ"]
-        else:
-            stackResolutionX=None
-            stackResolutionY=None
-            stackResolutionZ=None
-        
-        
-        renderapi.stack.create_stack(output_stack,
+            renderapi.stack.create_stack(output_stack,
                                       render=render,
                                       stackResolutionX=stackResolutionX,
                                       stackResolutionY=stackResolutionY,
                                       stackResolutionZ=stackResolutionZ)
-                                    
-        if output_stack not in render.run(
-                renderapi.render.get_stacks_by_owner_project):
-            # stack does not exist
-            render.run(renderapi.stack.create_stack,
-                        output_stack,
-                        stackResolutionX=stackResolutionX,
-                        stackResolutionY=stackResolutionY,
-                        stackResolutionZ=stackResolutionZ)
+            
+            if output_stack not in render.run(renderapi.render.get_stacks_by_owner_project):
+                # stack does not exist
+                render.run(renderapi.stack.create_stack,
+                            output_stack,
+                            stackResolutionX=stackResolutionX,
+                            stackResolutionY=stackResolutionY,
+                            stackResolutionZ=stackResolutionZ)
+            
+        else:
+            renderapi.stack.create_stack(output_stack,
+                                      render=render)                                    
+            if output_stack not in render.run(
+                    renderapi.render.get_stacks_by_owner_project):
+                # stack does not exist
+                render.run(renderapi.stack.create_stack,
+                            output_stack,
+                            stackResolutionX=stackResolutionX,
+                            stackResolutionY=stackResolutionY,
+                            stackResolutionZ=stackResolutionZ)
 
         render.run(renderapi.stack.set_stack_state,
                     output_stack, 'LOADING')

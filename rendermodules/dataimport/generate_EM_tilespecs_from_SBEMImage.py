@@ -65,8 +65,8 @@ class GenerateSBEMImageTileSpecs(StackOutputModule):
         ip[0] = renderapi.image_pyramid.MipMap(imageUrl='file://' + filepath)        
 
         tf_trans = renderapi.transform.AffineModel(
-                                 B0=tile['glob_x']/pxs,
-                                 B1=tile['glob_y']/pxs)
+                                 B0=float(tile['glob_x'])/pxs,
+                                 B1=float(tile['glob_y'])/pxs)
         
         # tf_scale = renderapi.transform.AffineModel(
         #                          M00=pxs,
