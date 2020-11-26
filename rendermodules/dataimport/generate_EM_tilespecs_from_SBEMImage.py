@@ -13,6 +13,8 @@ from rendermodules.dataimport.schemas import (GenerateEMTileSpecsOutput,
 
 from rendermodules.utilities.EMBL_file_utils import groupsharepath
 
+import time
+
 import numpy as np
 import glob
 import bdv_tools as bdv
@@ -105,10 +107,18 @@ class GenerateSBEMImageTileSpecs(StackOutputModule):
     def ts_from_sbemimage (self,imgdir):
 
         os.chdir(imgdir)
+        
+        
+        user = os.getlogin()
+
+        timestamp = time.localtime()
+
+        log_name = user + '_{}{:02d}{:02d}-{:02d}{:02d}'.format(timestamp.tm_year,timestamp.tm_mon,timestamp.tm_mday,timestamp.tm_hour,timestamp.tm_min)
+
 
         # mipmap_args = []
         # tilespecpaths = []
-
+        logfile = os.path.join(imgdir,'Render_convert'+logname+'.log')
 
         if not os.path.exists('meta'): print('Change to proper directory!');exit()
 
@@ -145,10 +155,14 @@ class GenerateSBEMImageTileSpecs(StackOutputModule):
                 if line.startswith('TILE: '):
 
                     f1,tilespeclist = self.ts_from_SBEMtile(line,pxs)
-
-                    # mipmap_args.append((f1,os.path.realpath(downdir)))
-                    tspecs.append(tilespeclist)
-
+                    
+                    if os.path.exists(f1):
+                        tspecs.append(tilespeclist)
+                    else:
+                        fnf_error = 'ERROR: File '+f1+' does not exist'
+                        print(fnf_error)
+                        with open(logfile,'w') as log: log.writelines(fnf_error)
+                        
         return tspecs,resolution #,mipmap_args
 
     def run(self):
