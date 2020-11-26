@@ -118,7 +118,7 @@ class GenerateSBEMImageTileSpecs(StackOutputModule):
 
         # mipmap_args = []
         # tilespecpaths = []
-        logfile = os.path.join(imgdir,'Render_convert'+logname+'.log')
+        logfile = os.path.join(imgdir,'Render_convert'+log_name+'.log')
 
         if not os.path.exists('meta'): print('Change to proper directory!');exit()
 
