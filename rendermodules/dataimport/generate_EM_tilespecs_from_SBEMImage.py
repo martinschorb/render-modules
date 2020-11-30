@@ -4,8 +4,8 @@ create tilespecs from SBEMImage dataset
 """
 
 import os
+import numpy
 import renderapi
-from multiprocessing import Pool
 from rendermodules.module.render_module import StackOutputModule
 
 from rendermodules.dataimport.schemas import (GenerateEMTileSpecsOutput,
@@ -15,12 +15,12 @@ from rendermodules.utilities.EMBL_file_utils import groupsharepath
 
 import time
 
-# import numpy as np
+import numpy as np
 import glob
 import bdv_tools as bdv
 from pyEM import parse_adoc
 
-# from rendermodules.utilities import uri_utils
+from rendermodules.utilities import uri_utils
 
 
 example_input = {
@@ -49,65 +49,59 @@ class GenerateSBEMImageTileSpecs(StackOutputModule):
     default_output_schema = GenerateEMTileSpecsOutput
 
 
-    def ts_from_SBEMtile(line,pxs,logfile):
-        if line.startswith('TILE: '):
-            tile = bdv.str2dict(line[line.find('{'):])
-            
-            # curr_posid = [int(tile['tileid'].split('.')[0]),int(tile['tileid'].split('.')[1])]
-            # curr_pos = tilepos[posid.index(str(curr_posid[0])+'.'+str(curr_posid[1]))]
-    
-       # 2) The translation matrix to position the object in space (lower left corner)
-            # mat_t = np.concatenate((np.eye(3),[[tile['glob_x']],[tile['glob_y']],[tile['glob_z']]]),axis=1)
-            # mat_t = np.concatenate((mat_t,[[0,0,0,1]]))
-    
-            f1 = os.path.realpath(tile['filename'])
-    
-            filepath= groupsharepath(f1)        
-    
-            ip = renderapi.image_pyramid.ImagePyramid()
-            ip[0] = renderapi.image_pyramid.MipMap(imageUrl='file://' + filepath)        
-    
-            tf_trans = renderapi.transform.AffineModel(
-                                     B0=float(tile['glob_x'])/pxs,
-                                     B1=float(tile['glob_y'])/pxs)
-            
-            # tf_scale = renderapi.transform.AffineModel(
-            #                          M00=pxs,
-            #                          M11=pxs)
-    
-            print("Processing tile "+tile['tileid']+" metadata for Render.\n")
-            
-            
-            ts = renderapi.tilespec.TileSpec(
-                tileId=tile['tileid'],
-                imagePyramid=ip,
-                z=tile['slice_counter'],#tile['glob_z'],
-                width=tile['tile_width'],
-                height=tile['tile_height'],
-                minint=0, maxint=255,
-                tforms=[tf_trans],
-                # imagePyramid=ip,
-                sectionId=tile['slice_counter'],
-                scopeId='3View',
-                cameraId='3View',
-                # imageCol=imgdata['img_meta']['raster_pos'][0],
-                # imageRow=imgdata['img_meta']['raster_pos'][1],
-                stageX = float(tile['glob_x'])/pxs,
-                stageY = float(tile['glob_y'])/pxs,
-                rotation = 0.0,
-                pixelsize = pxs)
-    
-            # json_file = os.path.realpath(os.path.join(tilespecdir,outputProject+'_'+outputOwner+'_'+outputStack+'_%04d.json'%z))
-            # fd=open(json_file, "w")
-            # renderapi.utils.renderdump(tilespeclist,fd,sort_keys=True, indent=4, separators=(',', ': '))
-            # fd.close()
-            if os.path.exists(f1):
-                return ts
-            else:
-                fnf_error = 'ERROR: File '+f1+' does not exist'
-                print(fnf_error)
-                with open(logfile,'w') as log: log.writelines(fnf_error)
-            
+    def ts_from_SBEMtile(self,line,pxs):
+        tile = bdv.str2dict(line[line.find('{'):])
+        
+        # curr_posid = [int(tile['tileid'].split('.')[0]),int(tile['tileid'].split('.')[1])]
+        # curr_pos = tilepos[posid.index(str(curr_posid[0])+'.'+str(curr_posid[1]))]
+
+   # 2) The translation matrix to position the object in space (lower left corner)
+        # mat_t = np.concatenate((np.eye(3),[[tile['glob_x']],[tile['glob_y']],[tile['glob_z']]]),axis=1)
+        # mat_t = np.concatenate((mat_t,[[0,0,0,1]]))
+
+        f1 = os.path.realpath(tile['filename'])
+
+        filepath= groupsharepath(f1)        
+
+        ip = renderapi.image_pyramid.ImagePyramid()
+        ip[0] = renderapi.image_pyramid.MipMap(imageUrl='file://' + filepath)        
+
+        tf_trans = renderapi.transform.AffineModel(
+                                 B0=float(tile['glob_x'])/pxs,
+                                 B1=float(tile['glob_y'])/pxs)
+        
+        # tf_scale = renderapi.transform.AffineModel(
+        #                          M00=pxs,
+        #                          M11=pxs)
+
+        print("Processing tile "+tile['tileid']+" metadata for Render.")
+        
+        
+        ts = renderapi.tilespec.TileSpec(
+            tileId=tile['tileid'],
+            imagePyramid=ip,
+            z=tile['slice_counter'],#tile['glob_z'],
+            width=tile['tile_width'],
+            height=tile['tile_height'],
+            minint=0, maxint=255,
+            tforms=[tf_trans],
+            # imagePyramid=ip,
+            sectionId=tile['slice_counter'],
+            scopeId='3View',
+            cameraId='3View',
+            # imageCol=imgdata['img_meta']['raster_pos'][0],
+            # imageRow=imgdata['img_meta']['raster_pos'][1],
+            stageX = float(tile['glob_x'])/pxs,
+            stageY = float(tile['glob_y'])/pxs,
+            rotation = 0.0,
+            pixelsize = pxs)
+
+        # json_file = os.path.realpath(os.path.join(tilespecdir,outputProject+'_'+outputOwner+'_'+outputStack+'_%04d.json'%z))
+        # fd=open(json_file, "w")
+        # renderapi.utils.renderdump(tilespeclist,fd,sort_keys=True, indent=4, separators=(',', ': '))
+        # fd.close()
+
+        return f1,ts
 
 
     def ts_from_sbemimage (self,imgdir):
@@ -154,15 +148,18 @@ class GenerateSBEMImageTileSpecs(StackOutputModule):
             z_thick = float(config['slice_thickness'][0])#/1000  # in um
 
             resolution = [pxs,pxs,z_thick]    
-            
-            tiles=[]
+
             for line in mdl:
                 if line.startswith('TILE: '):
-                    tiles.append((line,pxs,logfile))
+
+                    f1,tilespeclist = self.ts_from_SBEMtile(line,pxs)
                     
-            with Pool(processes=self.args.get('pool_size')) as pool:
-                tspecs.append(pool.starmap(self.ts_from_SBEMtile,tiles))
-             
+                    if os.path.exists(f1):
+                        tspecs.append(tilespeclist)
+                    else:
+                        fnf_error = 'ERROR: File '+f1+' does not exist'
+                        print(fnf_error)
+                        with open(logfile,'w') as log: log.writelines(fnf_error)
                         
         return tspecs,resolution #,mipmap_args
 
