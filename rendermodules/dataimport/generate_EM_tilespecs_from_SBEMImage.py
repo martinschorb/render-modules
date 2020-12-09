@@ -48,7 +48,7 @@ class GenerateSBEMImageTileSpecs(StackOutputModule):
     default_schema = GenerateSBEMTileSpecsParameters
     default_output_schema = GenerateEMTileSpecsOutput
     
-    def rotmatrix(angle):
+    def rotmatrix(self,angle):
         th = np.radians(angle)
         c, s = np.cos(th), np.sin(th)
         M = np.array(((c, -s), (s, c)))
