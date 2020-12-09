@@ -75,7 +75,7 @@ class GenerateSBEMImageTileSpecs(StackOutputModule):
                                  B0=float(tile['glob_x'])/pxs,
                                  B1=float(tile['glob_y'])/pxs)
         
-        M = self.rotmatrix(rotation)
+        M = self.rotmatrix(-rotation)
         
         tf_rot = renderapi.transform.AffineModel(
                                   M00=M[0,0],
