@@ -4,7 +4,7 @@ create tilespecs from SBEMImage dataset
 """
 
 import os
-import numpy
+import numpy as np
 import renderapi
 from rendermodules.module.render_module import StackOutputModule
 
@@ -47,7 +47,12 @@ example_input = {
 class GenerateSBEMImageTileSpecs(StackOutputModule):
     default_schema = GenerateSBEMTileSpecsParameters
     default_output_schema = GenerateEMTileSpecsOutput
-
+    
+    def rotmatrix(angle):
+        th = np.radians(angle)
+        c, s = np.cos(th), np.sin(th)
+        M = np.array(((c, -s), (s, c)))
+        return M
 
     def ts_from_SBEMtile(self,line,pxs,rotation):
         tile = bdv.str2dict(line[line.find('{'):])
@@ -70,9 +75,13 @@ class GenerateSBEMImageTileSpecs(StackOutputModule):
                                  B0=float(tile['glob_x'])/pxs,
                                  B1=float(tile['glob_y'])/pxs)
         
-        # tf_scale = renderapi.transform.AffineModel(
-        #                          M00=pxs,
-        #                          M11=pxs)
+        M = self.rotmatrix(rotation)
+        
+        tf_rot = renderapi.transform.AffineModel(
+                                  M00=M[0,0],
+                                  M01=M[0,1],
+                                  M10=M[1,0],
+                                  M11=M[1,1])
 
         print("Processing tile "+tile['tileid']+" metadata for Render.")
         
@@ -84,7 +93,7 @@ class GenerateSBEMImageTileSpecs(StackOutputModule):
             width=tile['tile_width'],
             height=tile['tile_height'],
             minint=0, maxint=255,
-            tforms=[tf_trans],
+            tforms=[tf_trans,tf_rot],
             # imagePyramid=ip,
             sectionId=tile['slice_counter'],
             scopeId='3View',
@@ -151,7 +160,7 @@ class GenerateSBEMImageTileSpecs(StackOutputModule):
             
             rotation = float(config['rotation'][0].strip('[],'))
 
-            for line in mdl:
+            for line in mdl[:10]:
                 if line.startswith('TILE: '):
 
                     f1,tilespeclist = self.ts_from_SBEMtile(line,pxs,rotation)
