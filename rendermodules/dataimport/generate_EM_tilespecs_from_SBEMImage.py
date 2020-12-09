@@ -76,7 +76,7 @@ class GenerateSBEMImageTileSpecs(StackOutputModule):
         ypos=float(tile['glob_y'])/pxs
         M = self.rotmatrix(rotation)
         
-        pos = np.dot(M,[xpos,ypos])
+        pos = np.dot(M.T,[xpos,ypos])
         
         tf_trans = renderapi.transform.AffineModel(
                                  B0=pos[0],
@@ -150,9 +150,6 @@ class GenerateSBEMImageTileSpecs(StackOutputModule):
         for mfile in mfiles:
             
             stackname = self.args.get("output_stack")
-            
-            print('stackname')
-            print(self.args)
             
             # with open(mfile) as mf: ml = mf.read().splitlines()
             acq_suffix = mfile[mfile.rfind('_'):]
