@@ -74,7 +74,7 @@ class GenerateSBEMImageTileSpecs(StackOutputModule):
 
         xpos=float(tile['glob_x'])/pxs
         ypos=float(tile['glob_y'])/pxs
-        M = self.rotmatrix(rotation)
+        M = self.rotmatrix(-rotation)
         
         pos = np.dot(M,[xpos,ypos])
         
