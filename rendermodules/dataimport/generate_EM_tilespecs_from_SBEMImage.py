@@ -76,7 +76,7 @@ class GenerateSBEMImageTileSpecs(StackOutputModule):
         ypos=float(tile['glob_y'])/pxs
         M = self.rotmatrix(rotation)
         
-        pos = np.dot(M.T,[xpos,ypos])
+        pos = np.dot(M,[xpos,ypos])
         
         tf_trans = renderapi.transform.AffineModel(
                                  B0=pos[0],
@@ -100,7 +100,7 @@ class GenerateSBEMImageTileSpecs(StackOutputModule):
             width=tile['tile_width'],
             height=tile['tile_height'],
             minint=0, maxint=255,
-            tforms=[tf_rot,tf_trans],
+            tforms=[tf_trans,tf_rot],
             # imagePyramid=ip,
             sectionId=tile['slice_counter'],
             scopeId='3View',
