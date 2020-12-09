@@ -49,7 +49,7 @@ class GenerateSBEMImageTileSpecs(StackOutputModule):
     default_output_schema = GenerateEMTileSpecsOutput
 
 
-    def ts_from_SBEMtile(self,line,pxs):
+    def ts_from_SBEMtile(self,line,pxs,rotation):
         tile = bdv.str2dict(line[line.find('{'):])
         
         # curr_posid = [int(tile['tileid'].split('.')[0]),int(tile['tileid'].split('.')[1])]
@@ -93,7 +93,7 @@ class GenerateSBEMImageTileSpecs(StackOutputModule):
             # imageRow=imgdata['img_meta']['raster_pos'][1],
             stageX = float(tile['glob_x'])/pxs,
             stageY = float(tile['glob_y'])/pxs,
-            rotation = 0.0,
+            rotation = rotation,
             pixelsize = pxs)
 
         # json_file = os.path.realpath(os.path.join(tilespecdir,outputProject+'_'+outputOwner+'_'+outputStack+'_%04d.json'%z))
@@ -146,13 +146,15 @@ class GenerateSBEMImageTileSpecs(StackOutputModule):
             pxs = float(config['pixel_size'][0].strip('[],'))#/1000  # in um
     
             z_thick = float(config['slice_thickness'][0])#/1000  # in um
-
+            
             resolution = [pxs,pxs,z_thick]    
+            
+            rotation = float(config['rotation'][0].strip('[],'))
 
             for line in mdl:
                 if line.startswith('TILE: '):
 
-                    f1,tilespeclist = self.ts_from_SBEMtile(line,pxs)
+                    f1,tilespeclist = self.ts_from_SBEMtile(line,pxs,rotation)
                     
                     if os.path.exists(f1):
                         tspecs.append(tilespeclist)
