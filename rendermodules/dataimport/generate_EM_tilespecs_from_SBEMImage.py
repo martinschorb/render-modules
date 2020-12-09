@@ -100,7 +100,7 @@ class GenerateSBEMImageTileSpecs(StackOutputModule):
             width=tile['tile_width'],
             height=tile['tile_height'],
             minint=0, maxint=255,
-            tforms=[tf_rot,tf_trans],
+            tforms=[tf_trans,tf_rot],
             # imagePyramid=ip,
             sectionId=tile['slice_counter'],
             scopeId='3View',
