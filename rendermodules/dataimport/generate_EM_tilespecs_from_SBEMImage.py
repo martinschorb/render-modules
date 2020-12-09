@@ -74,7 +74,7 @@ class GenerateSBEMImageTileSpecs(StackOutputModule):
 
         xpos=float(tile['glob_x'])/pxs
         ypos=float(tile['glob_y'])/pxs
-        M = self.rotmatrix(-rotation)
+        M = self.rotmatrix(rotation)
         
         pos = np.dot(M,[xpos,ypos])
         
@@ -141,10 +141,16 @@ class GenerateSBEMImageTileSpecs(StackOutputModule):
 
         mfiles = glob.glob(mfile0+'*')
 
-        tspecs=[]        
-
+        tspecs=[]
+        allspecs = []
+        curr_res = -1
+        curr_rot = -1
+        stack_idx = 0
+        
         for mfile in mfiles:
-
+            
+            stackname = self.args.get('stack')
+            
             # with open(mfile) as mf: ml = mf.read().splitlines()
             acq_suffix = mfile[mfile.rfind('_'):]
 
@@ -162,11 +168,25 @@ class GenerateSBEMImageTileSpecs(StackOutputModule):
             pxs = float(config['pixel_size'][0].strip('[],'))#/1000  # in um
     
             z_thick = float(config['slice_thickness'][0])#/1000  # in um
-            
-            resolution = [pxs,pxs,z_thick]    
-            
+                        
+            resolution = [pxs,pxs,z_thick]  
             rotation = float(config['rotation'][0].strip('[],'))
-
+            
+            if not curr_res == -1:
+                if not resolution==curr_res:
+                    stack_idx += 1
+                    allspecs.append([stackname,tspecs,curr_res])
+                    stackname += '_' + '%02d' % stack_idx                    
+                    tspecs=[]
+                elif not rotation==curr_rot:
+                    stack_idx += 1
+                    allspecs.append([stackname,tspecs,curr_res])
+                    stackname += '_' + '%02d' % stack_idx                    
+                    tspecs=[]
+            
+            curr_res = resolution
+            curr_rot = rotation
+            
             for line in mdl[:10]:
                 if line.startswith('TILE: '):
 
@@ -178,8 +198,11 @@ class GenerateSBEMImageTileSpecs(StackOutputModule):
                         fnf_error = 'ERROR: File '+f1+' does not exist'
                         print(fnf_error)
                         with open(logfile,'w') as log: log.writelines(fnf_error)
-                        
-        return tspecs,resolution #,mipmap_args
+                     
+                
+        allspecs.append([stackname,tspecs,resolution])
+            
+        return allspecs #,mipmap_args
 
     def run(self):
         # with open(self.args['metafile'], 'r') as f:
@@ -190,19 +213,22 @@ class GenerateSBEMImageTileSpecs(StackOutputModule):
                       
         # print(imgdir)
 
-        tspecs,resolution = self.ts_from_sbemimage(imgdir)
+        allspecs = self.ts_from_sbemimage(imgdir)
         
         # create stack and fill resolution parameters
         
+        for specs in allspecs:
+            
+            resolution=specs[2]
         
-        self.args["output_stackVersion"]["stackResolutionX"]=resolution[0]
-        self.args["output_stackVersion"]["stackResolutionY"]=resolution[1]
-        self.args["output_stackVersion"]["stackResolutionZ"]=resolution[2]       
+            self.args["output_stackVersion"]["stackResolutionX"]=resolution[0]
+            self.args["output_stackVersion"]["stackResolutionY"]=resolution[1]
+            self.args["output_stackVersion"]["stackResolutionZ"]=resolution[2]       
        
+            self.args["stack"] = specs[0]
+            
 
-        
-
-        self.output_tilespecs_to_stack(tspecs)
+            self.output_tilespecs_to_stack(specs[1])
                                        
 # I don know what this does... so leave it out
         # try:
