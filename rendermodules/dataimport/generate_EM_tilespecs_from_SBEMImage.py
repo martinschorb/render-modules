@@ -149,7 +149,7 @@ class GenerateSBEMImageTileSpecs(StackOutputModule):
         
         for mfile in mfiles:
             
-            stackname = self.args.get("stack")
+            stackname = self.args.get("output_stack")
             
             print('stackname')
             print(self.args)
@@ -228,7 +228,7 @@ class GenerateSBEMImageTileSpecs(StackOutputModule):
             self.args["output_stackVersion"]["stackResolutionY"]=resolution[1]
             self.args["output_stackVersion"]["stackResolutionZ"]=resolution[2]       
        
-            self.args["stack"] = specs[0]
+            self.args["output_stack"] = specs[0]
             
 
             self.output_tilespecs_to_stack(specs[1])
