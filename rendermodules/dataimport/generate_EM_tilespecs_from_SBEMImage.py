@@ -151,6 +151,9 @@ class GenerateSBEMImageTileSpecs(StackOutputModule):
             
             stackname = self.args.get('stack')
             
+            print('stackname')
+            print(stackname)
+            
             # with open(mfile) as mf: ml = mf.read().splitlines()
             acq_suffix = mfile[mfile.rfind('_'):]
 
@@ -176,7 +179,7 @@ class GenerateSBEMImageTileSpecs(StackOutputModule):
                 if not resolution==curr_res:
                     stack_idx += 1
                     allspecs.append([stackname,tspecs,curr_res])
-                    stackname += '_' + '%02d' % stack_idx                    
+                    stackname += '_' + '%02d' %stack_idx                    
                     tspecs=[]
                 elif not rotation==curr_rot:
                     stack_idx += 1
