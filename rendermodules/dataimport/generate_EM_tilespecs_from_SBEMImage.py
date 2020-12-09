@@ -120,7 +120,7 @@ class GenerateSBEMImageTileSpecs(StackOutputModule):
         return f1,ts
 
 
-    def ts_from_sbemimage (self,imgdir):
+    def ts_from_sbemimage (self,imgdir,stackname):
 
         os.chdir(imgdir)
         
@@ -147,10 +147,8 @@ class GenerateSBEMImageTileSpecs(StackOutputModule):
         curr_rot = -1
         stack_idx = 0
         
-        for mfile in mfiles:
-            
-            stackname = self.args.get("stack")
-            
+        for mfile in mfiles:          
+                        
             print('stackname')
             print(stackname)
             
@@ -213,10 +211,11 @@ class GenerateSBEMImageTileSpecs(StackOutputModule):
 
         imgdir = self.args.get('image_directory')
         
+        stackname = self.args.get("stack")
                       
         # print(imgdir)
 
-        allspecs = self.ts_from_sbemimage(imgdir)
+        allspecs = self.ts_from_sbemimage(imgdir,stackname)
         
         # create stack and fill resolution parameters
         
