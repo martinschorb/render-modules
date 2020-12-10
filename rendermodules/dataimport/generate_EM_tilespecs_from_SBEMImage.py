@@ -109,7 +109,7 @@ class GenerateSBEMImageTileSpecs(StackOutputModule):
             # imageRow=imgdata['img_meta']['raster_pos'][1],
             stageX = pos[0],
             stageY = pos[1],
-            rotation = 0,
+            rotation = rotation,
             pixelsize = pxs)
 
         # json_file = os.path.realpath(os.path.join(tilespecdir,outputProject+'_'+outputOwner+'_'+outputStack+'_%04d.json'%z))
@@ -187,7 +187,7 @@ class GenerateSBEMImageTileSpecs(StackOutputModule):
             curr_res = resolution
             curr_rot = rotation
             
-            for line in mdl[:10]:
+            for line in mdl:
                 if line.startswith('TILE: '):
 
                     f1,tilespeclist = self.ts_from_SBEMtile(line,pxs,rotation)
