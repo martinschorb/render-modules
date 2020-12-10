@@ -107,8 +107,8 @@ class GenerateSBEMImageTileSpecs(StackOutputModule):
             cameraId='3View',
             # imageCol=imgdata['img_meta']['raster_pos'][0],
             # imageRow=imgdata['img_meta']['raster_pos'][1],
-            stageX = float(tile['glob_x'])/pxs,
-            stageY = float(tile['glob_y'])/pxs,
+            stageX = pos[0],
+            stageY = pos[1],
             rotation = rotation,
             pixelsize = pxs)
 
