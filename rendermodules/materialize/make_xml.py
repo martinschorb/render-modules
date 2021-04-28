@@ -59,6 +59,6 @@ class MakeXML(argschema.schemas.DefaultSchema):
         
         
 if __name__ == "__main__":
-    mod = MakeXML(input_data=example)
+    mod = MakeXML(path=example)
     mod.run()
  
