@@ -214,7 +214,7 @@ class ScaleList(List):
 
 
 
-class MakeXMLParameters(argschema.ArgSchemaParser):
+class MakeXMLParameters(argschema.schemas.DefaultSchema):
     path = InFileOrDir(required=True, description=(
         "Path to the image data. Supports N5 and HDF5"))
     scale_factors = ScaleList(List(Int),required=False, description=(

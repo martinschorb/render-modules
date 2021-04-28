@@ -13,7 +13,7 @@ example = {
 }
 
 
-class MakeXML(argschema.schemas.DefaultSchema):
+class MakeXML(argschema.ArgSchemaParser):
     default_schema = MakeXMLParameters
     default_output_schema = MakeXMLOutput
 
