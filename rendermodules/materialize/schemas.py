@@ -225,10 +225,12 @@ class MakeXMLParameters(argschema.schemas.DefaultSchema):
     path = InFileOrDir(required=True, description=(
         "Path to the image data. Supports N5 and HDF5"))
     scale_factors = ScaleList(required=False, description=(
-        "List of downsampling factors"))
+        "List of downsampling factors"),
+        default = 3 * [[2, 2, 2]])
         
     resolution = ResolutionList(required=False, description=(
-        "List of voxel resolution."))
+        "List of voxel resolution."),
+        default = [0.05, 0.015, 0.015])
     unit = mm.fields.Str(required=False,default='micrometer')
 
 

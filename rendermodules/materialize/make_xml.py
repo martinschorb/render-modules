@@ -19,7 +19,8 @@ class MakeXML(argschema.schemas.DefaultSchema):
 
 
 
-    def make_render_xml(path, scale_factors = 3 * [[2, 2, 2]], resolution = [0.05, 0.015, 0.015], unit = 'micrometer'):
+    def make_render_xml(path, scale_factors , resolution, unit):
+        
         xml_path = path.replace('.n5', '.xml')
     
         attrs = {'channel': {'id': None}}
@@ -39,8 +40,9 @@ class MakeXML(argschema.schemas.DefaultSchema):
                            enforce_consistency=False)
         write_n5_metadata(path, scale_factors, resolution, setup_id=0, timepoint=0, overwrite=True)
 
-    def run(self):
-        print()
+    def run(self):        
+        self.make_render_xml(self.args['path'], self.args['scale_factors'] , self.args['resolution'], self.args['unit'])
+        
         
         
 if __name__ == "__main__":
