@@ -4,9 +4,11 @@ from rendermodules.module.schemas import (
     RenderParameters, SparkParameters, MaterializedBoxParameters,
     ZRangeParameters, RenderParametersRenderWebServiceParameters)
 from argschema.fields import (Str, OutputDir, Int, Boolean, Float,
-                              List, InputDir, Nested)
+                              List, InputDir, Nested, validate_input_path)
 from marshmallow import post_load
-import marshmallow
+import marshmallow as mm
+import os
+import sys
 
 
 class Bounds(argschema.schemas.DefaultSchema):
@@ -135,7 +137,7 @@ class ValidateMaterializationParameters(argschema.ArgSchema):
     minZ = argschema.fields.Int(required=True)
     maxZ = argschema.fields.Int(required=True)
     ext = argschema.fields.Str(required=False, default="png",
-                               validator=marshmallow.validate.OneOf(
+                               validator=mm.validate.OneOf(
                                    ["png", "jpg", "tif"]))
     basedir = argschema.fields.InputDir(required=True, description=(
         "base directory for materialization"))
@@ -161,3 +163,79 @@ class DeleteMaterializedSectionsParameters(argschema.ArgSchema):
 
 class DeleteMaterializedSectionsOutput(argschema.schemas.DefaultSchema):
     pass
+
+
+class InFileOrDir(Str):
+    """InFileOrDir is  :class:`marshmallow.fields.Str` subclass which is a path to a
+       a directory or a file that exists and that the user can access
+       (presently checked with os.access)
+    """
+
+    def _validate(self, value):
+        
+        if not os.path.isdir(value):
+            validate_input_path(value)
+
+        if sys.platform == "win32":
+            try:
+                x = list(os.scandir(value))
+            except PermissionError:
+                raise mm.ValidationError(
+                    "%s is not a readable directory" % value)
+        else:
+            if not os.access(value, os.R_OK):
+                raise mm.ValidationError(
+                    "%s is not a readable directory" % value)
+
+
+class ResolutionList(mm.fields.List):
+    def _validate(self, value):
+        if len(value) != 3 :
+                    raise mm.ValidationError(
+                            "Wrong dimensions for resolution list %s" % value)
+        for item in value:
+            try:
+                float(item)        
+            except ValueError:
+                    raise mm.ValidationError(
+                            "Resolution list %s needs to contain only numbers." % value)
+
+
+class ScaleList(List):
+    
+    def _validate(self, value):
+        flattened_list = [item for sublist in value for item in sublist]
+        if any(type(item) != int for item in flattened_list):
+            raise mm.ValidationError(
+                    "All entries in scale list %s need to be integers." % value)
+            
+        if any(len(item) != 3 for item in value):
+            raise mm.ValidationError(
+                    "Wrong dimensions for scale list %s" % value)
+        
+        for idx,item in enumerate(value):
+            if item != value[idx-1]:
+                raise mm.ValidationError(
+                    "Scale factors need to be consistent!")
+        
+
+
+
+class MakeXMLParameters(argschema.schemas.DefaultSchema):
+    path = InFileOrDir(required=True, description=(
+        "Path to the image data. Supports N5 and HDF5"))
+    scale_factors = ScaleList(required=False, description=(
+        "List of downsampling factors"))
+        
+    resolution = ResolutionList(required=False, description=(
+        "List of voxel resolution."))
+    unit = mm.fields.Str(required=False,default='micrometer')
+
+
+        
+
+class MakeXMLOutput(argschema.schemas.DefaultSchema):
+    pass
+
+
+
