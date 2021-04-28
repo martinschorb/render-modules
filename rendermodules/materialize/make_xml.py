@@ -18,7 +18,7 @@ class MakeXML(argschema.ArgSchemaParser):
     default_output_schema = MakeXMLOutput
 
 
-
+    @classmethod
     def make_render_xml(path, scale_factors , resolution, unit):
         
         if path.endswith('n5'):
