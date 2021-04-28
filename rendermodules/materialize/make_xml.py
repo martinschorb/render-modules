@@ -27,6 +27,8 @@ class MakeXML(argschema.schemas.DefaultSchema):
         elif path.endswith('h5'):
             xml_path = path.replace('.h5', '.xml')
             is_h5=True
+        else:
+            raise TypeError('Only h5 and n5 are currently supported.')
     
         attrs = {'channel': {'id': None}}
         attrs = validate_attributes(xml_path, attrs, setup_id=0,
