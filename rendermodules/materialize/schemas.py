@@ -4,7 +4,8 @@ from rendermodules.module.schemas import (
     RenderParameters, SparkParameters, MaterializedBoxParameters,
     ZRangeParameters, RenderParametersRenderWebServiceParameters)
 from argschema.fields import (Str, OutputDir, Int, Boolean, Float,
-                              List, InputDir, Nested, validate_input_path)
+                              List, InputDir, Nested)
+from argschema.fields.files import validate_input_path
 from marshmallow import post_load
 import marshmallow as mm
 import os
@@ -188,21 +189,13 @@ class InFileOrDir(Str):
                     "%s is not a readable directory" % value)
 
 
-class ResolutionList(mm.fields.List):
+class ResolutionList(List):
     def _validate(self, value):
         if len(value) != 3 :
                     raise mm.ValidationError(
                             "Wrong dimensions for resolution list %s" % value)
-        for item in value:
-            try:
-                float(item)        
-            except ValueError:
-                    raise mm.ValidationError(
-                            "Resolution list %s needs to contain only numbers." % value)
 
-
-class ScaleList(List):
-    
+class ScaleList(List):    
     def _validate(self, value):
         flattened_list = [item for sublist in value for item in sublist]
         if any(type(item) != int for item in flattened_list):
@@ -224,11 +217,10 @@ class ScaleList(List):
 class MakeXMLParameters(argschema.schemas.DefaultSchema):
     path = InFileOrDir(required=True, description=(
         "Path to the image data. Supports N5 and HDF5"))
-    scale_factors = ScaleList(required=False, description=(
+    scale_factors = ScaleList(List(Int),required=False, description=(
         "List of downsampling factors"),
-        default = 3 * [[2, 2, 2]])
-        
-    resolution = ResolutionList(required=False, description=(
+        default = 3 * [[2, 2, 2]])        
+    resolution = ResolutionList(Float,required=False, description=(
         "List of voxel resolution."),
         default = [0.05, 0.015, 0.015])
     unit = mm.fields.Str(required=False,default='micrometer')

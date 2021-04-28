@@ -1,6 +1,6 @@
 import argschema
 from rendermodules.materialize.schemas import MakeXMLParameters, MakeXMLOutput
-from pybdv.metadata import write_xml_metadata, write_n5_metadata, validate_attributes
+from pybdv.metadata import write_xml_metadata, write_h5_metadata, write_n5_metadata, validate_attributes
 # import sys
 
 
@@ -21,16 +21,20 @@ class MakeXML(argschema.schemas.DefaultSchema):
 
     def make_render_xml(path, scale_factors , resolution, unit):
         
-        xml_path = path.replace('.n5', '.xml')
+        if path.endswith('n5'):
+            xml_path = path.replace('.n5', '.xml')
+            is_h5=False
+        elif path.endswith('h5'):
+            xml_path = path.replace('.h5', '.xml')
+            is_h5=True
     
         attrs = {'channel': {'id': None}}
         attrs = validate_attributes(xml_path, attrs, setup_id=0,
                                     enforce_consistency=False)
         
-        print(resolution)
         
         write_xml_metadata(xml_path, path, unit, resolution,
-                           is_h5=False,
+                           is_h5=is_h5,
                            setup_id=0, timepoint=0,
                            setup_name=None,
                            affine=None,
@@ -38,7 +42,14 @@ class MakeXML(argschema.schemas.DefaultSchema):
                            overwrite=False,
                            overwrite_data=False,
                            enforce_consistency=False)
-        write_n5_metadata(path, scale_factors, resolution, setup_id=0, timepoint=0, overwrite=True)
+        
+        if is_h5:
+            write_h5_metadata(path, scale_factors, resolution, setup_id=0, timepoint=0, overwrite=True)
+        else:
+            write_n5_metadata(path, scale_factors, resolution, setup_id=0, timepoint=0, overwrite=True)
+            
+            
+            
 
     def run(self):        
         self.make_render_xml(self.args['path'], self.args['scale_factors'] , self.args['resolution'], self.args['unit'])
