@@ -19,7 +19,7 @@ class MakeXML(argschema.ArgSchemaParser):
 
 
     @classmethod
-    def make_render_xml(path, scale_factors , resolution, unit):
+    def make_render_xml(self,path, scale_factors , resolution, unit):
         
         if path.endswith('n5'):
             xml_path = path.replace('.n5', '.xml')
